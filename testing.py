@@ -2,6 +2,6 @@
 
 def main():
     
-    print("Hello, world!")
+    print("Hi, world!")
 
 main()

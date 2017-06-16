@@ -1,5 +1,6 @@
-# This is a test
+# Final version
 
-def main():
-	print("Test")
+def main()
+	print("This test is a success")
+
 main()

@@ -13,31 +13,20 @@ lab7 will be on model
 
 import time
 import pigame
-import Obstacle
-import SpaceShip
-import Screen
+#import random
 
 SCREEN_CENTER = (0,0)
 class Controller:
-	"""Main clas of game, all actions occure in this class"""
 
 	def __init__(self)
-		#setup main menue, as well as other objects
+		#setup
 
 	def mainloop(self):
 
-		#Setup Screen, Spaceship
-	
-		#Start Timer
-	
 		while(True):	#main loop, a single frame
-
-			#Setup first Obstacles
 
 
 			#check for events/user input
-			
-
 			#react to user input/update models
 
 			#process updates / animations

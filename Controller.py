@@ -1,16 +1,3 @@
-'''Event Driven Programming
-GUI: Graphical User Interface
-Widget, a static box in the window, if clicked, enters event, triggers action
-Events -behavior/action, -state
-MVC model/view/controller (Design Pattern)
-Event driven programming: 
-widgets(-state, -behavior), widgets are the Model(NEED TO KNOW!) 
-events(-communication, -captures events), events are the Controller 
-display(-GUI), display is the View
-lab7 will be on model
-	\/<---->>Controller<<----->\/
-	View			Model'''
-
 import time
 import pygame
 import Obstacle

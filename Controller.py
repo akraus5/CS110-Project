@@ -12,31 +12,45 @@ lab7 will be on model
 	View			Model'''
 
 import time
-import pigame
+import pygame
 import Obstacle
 import SpaceShip
-import Screen
+import screen
 
-SCREEN_CENTER = (0,0)
 class Controller:
 	"""Main clas of game, all actions occure in this class"""
 
 	def __init__(self)
-		#setup main menue, as well as other objects
+		pygame.init()
+		self.screen = screen.Screen()	#later
+		self.background = pygame.Surface(self.screen.get_size()).convert()
+		self.obstacle = obstacle.Obstacle()
+		self.spaceship = spaceship.SpaceShip(50,50,'')
+		self.sprites = pygame.sprite.RenderPlain((spaceship,obstacle))	#setup main menue, as well as other objects
 
 	def mainloop(self):
 
 		#Setup Screen, Spaceship
 	
 		#Start Timer
-	
-		while(True):	#main loop, a single frame
+
+		pygame.key.set_repeat(1,50)
+		GameExit = False
+		while not GameExit:	#main loop, a single frame
 
 			#Setup first Obstacles
 
 
 			#check for events/user input
+			for event in pygame.event.get():
+				if event == pygame.QUIT:
+					GameExit = True
+				if event == pygame.KEYDOWN:
+					self.spaceship.move(event.key)
+
+			self.screen.update(self.sprites)
 			
+			pygame.display.flip()
 
 			#react to user input/update models
 

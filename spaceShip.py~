@@ -1,0 +1,22 @@
+class SpaceShip:
+	def __init__(self, x_val = 0, y_val):
+		self.x = x_val
+		self.y = y_val
+		self.alive = True
+
+	def collide():
+		#Health TBD, possibly able to change size of ship to add or lower difficulty
+		self.alive = False
+
+	def getX():
+		return self.x
+
+	def getY():
+		return self.y
+
+	def move(dx,dy)
+		self.x = self.getX() + dx
+		self.y = self.getX() + dy
+
+	def __str__(self):
+		return str(self.alive)

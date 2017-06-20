@@ -28,7 +28,7 @@ class Screen:
 
 			#pygame.quit()
 
-	#def __str__(self, SpaceShip):
+	#def __str__(self, SpaceShip):		Return 
 
 
 def testScreen():

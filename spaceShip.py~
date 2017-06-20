@@ -1,22 +1,58 @@
-class SpaceShip:
-	def __init__(self, x_val = 0, y_val):
-		self.x = x_val
-		self.y = y_val
-		self.alive = True
+import pygame
+import load_image
 
-	def collide():
-		#Health TBD, possibly able to change size of ship to add or lower difficulty
+class SpaceShip:  #(pygame.sprite.Sprite)
+	def __init__(self, scrwid, scrht, spd = 1, shipH = 20, shipW = 20):
+		pygame.sprite.Sprite.init__(self)
+		self.image, self.rect = load_image.load_image('spaceship.png', -1)
+		self.scrwid = scrwid
+		self.scrht = scrht
+		self.speed = spd
+		self.shipW = shipW
+		self.shipH = shipH
+		self.x = (self.scrwid // 2) - (self.shipW // 2)
+		self.y = ((self.scrwid * 6) // 7) - (self.shipH // 2)	#Speed?
+		self.alive = True
+		self.win = False
+		#self.sprite
+
+
+	def die(self):
 		self.alive = False
 
-	def getX():
+	def winlev(self):
+		self.win = True
+
+	def strtLev(self):#
+		##########
+		self.win = False
+
+	def getX(self):
 		return self.x
 
-	def getY():
+	def getY(self):
 		return self.y
 
-	def move(dx,dy)
-		self.x = self.getX() + dx
-		self.y = self.getX() + dy
+	def move(self, evnt) :
+
+		if ((evnt == pygame.K_UP) and (self.y > 0)):
+			self.y -= self.speed
+		
+		elif evnt == pygame.K_DOWN) and (self.y + self.shipH) < self.scrht)):
+			self.y += self.speed
+
+		if ((evnt == pygame.K_LEFT) and (self.x > 0)):
+			self.x -= self.speed
+
+		elif ((evnt == pygame.K_RIGHT) and ((self.x+self.shipW) < scrwid)):
+			self.x += self.speed
+
+	def update(self):
+		print('updating position')
 
 	def __str__(self):
 		return str(self.alive)
+
+def test():
+	'''Testing Hero Model'''
+

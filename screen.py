@@ -2,7 +2,7 @@ import pygame
 
 class Screen:
 	'''Screen object, used for main menue and the game screen, may or may not be seperated into two seperate objects. '''
-	def __init__(self, screenSize = (800,600)): #Screen 0,0 is top left
+	def __init__(self, screenSize = (800,600)): #Screen 0,0 is top left,
 		self.x_mid = screenSize[0] // 2
 		self.y_mid = screenSize[1] // 2
 		self.screen = pygame.display.set_mode(screenSize[0], screensize[1])
@@ -28,7 +28,7 @@ class Screen:
 
 			#pygame.quit()
 
-	#def __str__(self, SpaceShip):
+	#def __str__(self, SpaceShip):		Return 
 
 
 def testScreen():

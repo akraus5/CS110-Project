@@ -1,19 +1,48 @@
+import pygame
+import load_image
+
 class Obstacle:
-	def __init__(self, x_val = 0, y_val):#Y value is at top of screen
-		self.x = x_val
-		self.x = y_val
+	"""Obstacle object, decreases in size as game goes on, more appear in the game as time goes on"""
+	def __init__(self, x_val, y_val, scrW ,scrH, sz = 20, stDir = 'right', speed = 1):#Y value is at top of screen
+		pygame.sprite.Sprite.init__(self)
+		#self.image, self.rect = load_image.load_image('.png', -1)
+		self.scrW = scrW
+		self.scrH = scrH
+		self.sz = sz
+		self.x = x_val - self.sz // 2
+		self.y = y_val - self.sz // 2
+		self.dir = stDir
+		self.spd = speed
 
-	#def getX():			##maybe later
-	#	return self.x
+	def getX(self):
+		return self.x
 
-	def getY():
+	def getY(self):
 		return self.y
 
-	def lower(self, dy = 1):#Possibly change speed too
-		self.y = self.getY() - dy
+	def getSz(self):
+		return self.sz
 
-			#Must set up way to delete them when off screen
+	def change_dir(self):
+		if (self.x <= 0):
+			self.dir = 'right'
+		elif (self.x + self.sz >= self.scrW):
+			self.dir = 'left'
+		if (self.y <= 0):
+			self.dir = 'down'
+		elif (self.y + self.sz >= self.scrH):
+			self.dir = 'up'###mess with speed maybe
 
+	def move(self):
+		if (self.dir == 'left'):
+			self.x -= self.spd
+		if (self.dir == 'right'):
+			self.x += self.spd
+		if (self.dir == 'up'):
+			self.y -= self.spd
+		if (self.dir == 'down'):
+			self.y += self.spd
+	def update(self):
+		print('Updating Position')
 
-	def __str__(self):
-		
+	#def __str__(self):

@@ -1,16 +1,18 @@
 import pygame
-import load_image
+import utility
 
 class Obstacle:
 	"""Obstacle object, decreases in size as game goes on, more appear in the game as time goes on"""
-	def __init__(self, x_val, y_val, scrW ,scrH, sz = 20, stDir = 'right', speed = 1):#Y value is at top of screen
-		pygame.sprite.Sprite.init__(self)		#Possibly change picture file depending on size, or set input to controller
-		self.image, self.rect = load_image.load_image('asteroid.png', -1)
+
+	def __init__(self, x_val, y_val, scrW ,scrH, stDir='right', speed = 1):#Y value is at top of screen
+		pygame.sprite.Sprite.__init__(self)		#Possibly change picture file depending on size, or set input to controller
+		self.image, self.rect = utility.LoadImage('asteroid.png', -1)
 		self.scrW = scrW
 		self.scrH = scrH
-		self.sz = sz
-		self.x = x_val - self.sz // 2
-		self.y = y_val - self.sz // 2
+		self.width = self.rect.width
+		self.height = self.rect.height
+		self.x = x_val - self.width // 2
+		self.y = y_val - self.height // 2
 		self.dir = stDir
 		self.spd = speed
 
@@ -20,17 +22,17 @@ class Obstacle:
 	def getY(self):
 		return self.y
 
-	def getSz(self):
-		return self.sz
+	#def getSz(self):
+		#return self.sz
 
 	def change_dir(self):
 		if (self.x <= 0):
 			self.dir = 'right'
-		elif (self.x + self.sz >= self.scrW):
+		elif (self.x + self.width >= self.scrW):
 			self.dir = 'left'
 		if (self.y <= 0):
 			self.dir = 'down'
-		elif (self.y + self.sz >= self.scrH):
+		elif (self.y + self.height >= self.scrH):
 			self.dir = 'up'###mess with speed maybe
 
 	def move(self):

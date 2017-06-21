@@ -1,59 +1,51 @@
 import time
-import pigame
-import obstacle
-import spaceShip
+import pygame
+import Obstacle
+import SpaceShip
 import screen
 
-SCREEN_CENTER = (0,0)
 class Controller:
-	"""Main class of game, all actions occure in this class"""
+	"""Main clas of game, all actions occure in this class"""
 
-	def __init__(self)	#screen setup
+	def __init__(self)
 		pygame.init()
-		#setup main menue, as well as other objects, width, height, screen, background, ship, objects, sprites
-
-	def main_menue(self):
-		gameStart = False
-		while (not gameStart:)
-			#Screen setup, menue
-			window = screen.Screen()
-			#main menue GUI
-			
-			#Possibel options or difficulty
+		self.screen = screen.Screen()	#later
+		self.background = pygame.Surface(self.screen.get_size()).convert()
+		self.obstacle = obstacle.Obstacle()
+		self.spaceship = spaceship.SpaceShip(50,50,'')
+		self.sprites = pygame.sprite.RenderPlain((spaceship,obstacle))	#setup main menue, as well as other objects
 
 	def mainloop(self):
+
 		#Setup Screen, Spaceship
+
 		#Start Timer
-		gameStart = time.Time()
-		George = spaceShip.SpaceShip()
-		while(bool(George)):	#main loop, a single frame
+
+		pygame.key.set_repeat(1,50)
+		GameExit = False
+		while not GameExit:	#main loop, a single frame
 
 			#Setup first Obstacles
 
 
 			#check for events/user input
-			
+			for event in pygame.event.get():
+				if event == pygame.QUIT:
+					GameExit = True
+				if event == pygame.KEYDOWN:
+					self.spaceship.move(event.key)
+
+			self.screen.update(self.sprites)
+
+			pygame.display.flip()
 
 			#react to user input/update models
-			#screen.frameChange()
+
 			#process updates / animations
 
 			#redraw GUI / frame
-		window.endgame(bool(George))
-		quit()
 
-	def inputs(self, lk, rk)#left key and right key
-		self.lk = lk
-		self.rk = rk
-		evt = python.event.get()
-			if (evt == self.lk):
-				#move left
-				George.move(1,0):
-			elif(evt == self.rk):
-				#move right
-				George.move(0,1):
 
-		
 def main():
 	game = Controller()
 	game.mainloop()

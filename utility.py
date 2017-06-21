@@ -2,6 +2,15 @@ import os, sys, random
 import pygame
 
 def LoadImage(name, colorkey=None):
+	'''
+		Load an image
+		args: 	name: str, filename
+				colorkey: tuple, (R,G,B)
+		return: (image,image.get_rect()) - tuple
+
+				image: surface
+				image.get_rect(): rect
+	'''
 	fullname = os.path.join('assets', name)
 	try:
 		image = pygame.image.load(fullname)

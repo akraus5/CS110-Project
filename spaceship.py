@@ -61,6 +61,31 @@ class SpaceShip(pygame.sprite.Sprite):
 			args: 	evnt: event.key, input key
 			return: None
 		'''
+		'''
+			possible change, adding acceleration to up and down key, up key accelerates, downkey decellerates.
+
+		########speed becomes speed_x in __init__(), new parameter speed_y.		speed_y starts as zero########
+		if (evnt == pygame.K_UP):
+			self.speed_y += .5
+
+		elif (evnt == pygame.K_DOWN):
+			self.speed_y -= .5
+			
+		if not ((self.rect.y > 0) and (self.rect.y + self.shipH) < self.scrht)):
+			###2 possibilities###
+			#this: 
+			self.speed_y = -1*(self.speed_y) #or -1.5 as a penalty for missing resup
+			#or this:
+			self.speed_y = 0
+		self.rect.y -= int(self.speed_y)
+
+		########right, left key:########
+		if ((evnt == pygame.K_LEFT) and (self.rect.x > 0)):
+			self.rect.x -= self.speed_x
+
+		elif ((evnt == pygame.K_RIGHT) and ((self.rect.x+self.shipW) < self.scrwid)):
+			self.rect.x += self.speed_x
+		'''
 		if ((evnt == pygame.K_UP) and (self.rect.y > 0)):
 			self.rect.y -= self.speed
 
@@ -88,6 +113,3 @@ class SpaceShip(pygame.sprite.Sprite):
 			return: self.alive (str)
 		'''
 		return str(self.alive)
-
-#def test():
-#	'''Testing Hero Model'''

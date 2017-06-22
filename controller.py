@@ -25,7 +25,7 @@ class Controller:
 
 		pygame.key.set_repeat(1,50)
 		GameExit = False
-		while not GameExit:
+		while not GameExit:	#Demo game, to be modified
 			self.background.fill(black)
 
 			#check for events/user input

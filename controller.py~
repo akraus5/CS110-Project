@@ -21,14 +21,16 @@ class Controller:
 		pygame.display.set_caption('Game')
 
 	def mainloop(self):
-		black = (0,0,0)
-		
+
+
 		#Start Timer
-		
+
 		pygame.key.set_repeat(1,50)
 		GameExit = False
-		while not GameExit:	
-			self.background.fill(black)
+		while not GameExit:	#main loop, a single frame
+
+			#Setup first Obstacles
+
 
 			#check for events/user input
 			for event in pygame.event.get():
@@ -36,17 +38,8 @@ class Controller:
 					GameExit = True
 				if event == pygame.KEYDOWN:
 					self.spaceship.move(event.key)
-			
-			self.obstacle.move()
-			self.obstacle.change_dir()
 
-			if pygame.sprite.collide_rect(self.spacehsip,self.obstacle):
-				self.spaceship.die()
-			if pygame.sprite.collide_rect(self.spacehsip,self.resup):
-				self.spaceship.winLev()
-				
-			self.gameDisplay.blit(self.background,(0,0))
-			self.sprites.draw(self.gameDisplay)
+			self.screen.update(self.sprites)
 
 			pygame.display.flip()
 
@@ -58,6 +51,6 @@ class Controller:
 
 
 def main():
-	game = Controller(500,500)
+	game = Controller()
 	game.mainloop()
 main()

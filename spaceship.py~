@@ -18,19 +18,19 @@ class SpaceShip:  #(pygame.sprite.Sprite)
 		self.shipW = self.rect.width
 		self.shipH = self.rect.height
 		self.x = (self.scrwid // 2) - (self.shipW // 2)
-		self.y = ((self.scrht * 6) // 7) - (self.shipH // 2)	#Speed?
+		self.y = ((self.scrwid * 6) // 7) - (self.shipH // 2)	#Speed?
 		self.alive = True
 		self.win = False
 		#self.sprite
 
 
-	def die(self):
+	#def die(self):
 		#Meant to end main loop and end game
-		self.alive = False
+		#self.alive = False
 
-	def winLev(self):
+	#def winlev(self):
 		#Ends subloop for each level
-		self.win = True
+		#self.win = True
 
 	#def strtLev(self):#
 		##########resets ship parameters for next level

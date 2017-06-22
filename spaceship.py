@@ -1,7 +1,7 @@
 import pygame
 import utility
 
-class SpaceShip:  #(pygame.sprite.Sprite)
+class SpaceShip(pygame.sprite.Sprite):
 	def __init__(self, scrwid, scrht, spd = 1):
 		'''
 			Initialize SpaceShip
@@ -17,8 +17,8 @@ class SpaceShip:  #(pygame.sprite.Sprite)
 		self.speed = spd
 		self.shipW = self.rect.width
 		self.shipH = self.rect.height
-		self.x = (self.scrwid // 2) - (self.shipW // 2)
-		self.y = ((self.scrht * 6) // 7) - (self.shipH // 2)	#Speed?
+		self.rect.x = (self.scrwid // 2) - (self.shipW // 2)
+		self.rect.y = ((self.scrht * 6) // 7) - (self.shipH // 2)	#Speed?
 		self.alive = True
 		self.win = False
 		#self.sprite
@@ -32,6 +32,9 @@ class SpaceShip:  #(pygame.sprite.Sprite)
 		#Ends subloop for each level
 		self.win = True
 
+	def getStatus(self):
+		return self.alive,self.win
+
 	#def strtLev(self):#
 		##########resets ship parameters for next level
 		#self.win = False
@@ -40,17 +43,17 @@ class SpaceShip:  #(pygame.sprite.Sprite)
 		'''
 			Get x value of spaceship
 			args: None
-			return: self.x (int)
+			return: self.rect.x (int)
 		'''
-		return self.x
+		return self.rect.x
 
 	def getY(self):	#get Y val
 		'''
 			Get y value of spaceship
 			args: None
-			return: self.x (int)
+			return: self.rect.x (int)
 		'''
-		return self.y
+		return self.rect.y
 
 	def move(self, evnt):
 		'''
@@ -58,17 +61,17 @@ class SpaceShip:  #(pygame.sprite.Sprite)
 			args: 	evnt: event.key, input key
 			return: None
 		'''
-		if ((evnt == pygame.K_UP) and (self.y > 0)):
-			self.y -= self.speed
+		if ((evnt == pygame.K_UP) and (self.rect.y > 0)):
+			self.rect.y -= self.speed
 
-		elif ((evnt == pygame.K_DOWN) and ((self.y + self.shipH) < self.scrht) ):
-			self.y += self.speed
+		elif ((evnt == pygame.K_DOWN) and ((self.rect.y + self.shipH) < self.scrht) ):
+			self.rect.y += self.speed
 
-		if ((evnt == pygame.K_LEFT) and (self.x > 0)):
-			self.x -= self.speed
+		if ((evnt == pygame.K_LEFT) and (self.rect.x > 0)):
+			self.rect.x -= self.speed
 
-		elif ((evnt == pygame.K_RIGHT) and ((self.x+self.shipW) < self.scrwid)):
-			self.x += self.speed
+		elif ((evnt == pygame.K_RIGHT) and ((self.rect.x+self.shipW) < self.scrwid)):
+			self.rect.x += self.speed
 
 	def update(self):
 		'''

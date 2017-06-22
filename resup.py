@@ -1,7 +1,7 @@
 import pygame
 import utility
 
-class Resup:
+class Resup(pygame.sprite.Sprite):
 	"""endpoint object, when collision detected with spaceShip, level completes"""
 
 	def __init__(self, x_val, y_val):#		possibly scrW ,scrH,  sz = 20
@@ -15,24 +15,24 @@ class Resup:
 		self.image, self.rect = utility.LoadImage('moon.png', -1)
 		#self.scrW = scrW
 		#self.scrH = scrH
-		self.x = x_val #- self.sz // 2
-		self.y = y_val #- self.sz // 2
+		self.rect.x = x_val #- self.sz // 2
+		self.rect.y = y_val #- self.sz // 2
 
 	def getX(self):
 		'''
 			Get x value of resupply model
 			args: None
-			return: self.x (int)
+			return: self.rect.x (int)
 		'''
-		return self.x
+		return self.rect.x
 
 	def getY(self):
 		'''
 			Get y value of resupply model
 			args: None
-			return: self.y (int)
+			return: self.rect.y (int)
 		'''
-		return self.y
+		return self.rect.y
 
 	#def getSz(self):
 	#	return self.sz

@@ -18,12 +18,13 @@ class Controller:
 		self.sprites = pygame.sprite.RenderPlain((self.spaceship,self.obstacle,self.resup))	#setup main menue, as well as other objects
 		pygame.display.set_caption('Game')
 
-	def message_to_screen(self,text,color,size,font):
+	def message_to_screen(self,text,color,size,font,position=0):
 		self.font = pygame.font.SysFont(font,size)
 		self.color = color
+		self.position = position
 		self.text = self.font.render(text,True,self.color)
 		self.textRect = self.text.get_rect()
-		self.textRect.center = (self.scrW/2,self.scrH/2)
+		self.textRect.center = (self.scrW/2,self.scrH/2+self.position)
 		self.gameDisplay.blit(self.text,self.textRect)
 		pygame.display.flip()
 
@@ -36,10 +37,9 @@ class Controller:
 		GameExit = False
 		GameLose = False
 		while not GameExit:
-			if not GameLose:
+			while GameLose == Flase:
 				self.background.fill(black)
 
-				#check for events/user input
 				for event in pygame.event.get():
 					if event.type == pygame.QUIT:
 						GameExit = True
@@ -63,8 +63,20 @@ class Controller:
 
 				if not alive:
 					GameLose = True
-			if GameLose:
+			if GameLose == True:	
+				self.background.fill(black)
 				self.message_to_screen('You Lose',red,100,'comicsansms')
+				self.message_to_screen('Press C to play again or Q to quit',black,70,'comicsansms',30)
+				
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						GameExit = True
+					if event.type == pygame.KEYDOWN:
+						if event.key = pygame.K_q:
+							GameExit = True
+							GameLose = False
+						if event.key = pygame.K_c:
+							self.mainloop()
 
 
 

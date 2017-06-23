@@ -18,40 +18,54 @@ class Controller:
 		self.sprites = pygame.sprite.RenderPlain((self.spaceship,self.obstacle,self.resup))	#setup main menue, as well as other objects
 		pygame.display.set_caption('Game')
 
+	def message_to_screen(self,text,color,size,font):
+		self.font = pygame.font.SysFont(font,size)
+		self.color = color
+		self.text = self.font.render(text,True,self.color)
+		self.textRect = self.text.get_rect()
+		self.textRect.center = (self.scrW/2,self.scrH/2)
+		self.gameDisplay.blit(self.text,self.textRect)
+	
+		
 	def mainloop(self):
 		black = (0,0,0)
-
+		red = (255,0,0)
 		#Start Timer
 
 		pygame.key.set_repeat(1,50)
 		GameExit = False
+		GameLose = False
 		while not GameExit:
-			self.background.fill(black)
+			if not GameLose:
+				self.background.fill(black)
+			
+				#check for events/user input
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						GameExit = True
+					if event.type == pygame.KEYDOWN:
+						self.spaceship.move(event.key)
 
-			#check for events/user input
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					GameExit = True
-				if event.type == pygame.KEYDOWN:
-					self.spaceship.move(event.key)
+				self.obstacle.move()
+				self.obstacle.change_dir()
 
-			self.obstacle.move()
-			self.obstacle.change_dir()
+				if pygame.sprite.collide_rect(self.spaceship,self.obstacle):
+					self.spaceship.die()
+				if pygame.sprite.collide_rect(self.spaceship,self.resup):
+					self.spaceship.winLev()
 
-			if pygame.sprite.collide_rect(self.spaceship,self.obstacle):
-				self.spaceship.die()
-			if pygame.sprite.collide_rect(self.spaceship,self.resup):
-				self.spaceship.winLev()
+				self.gameDisplay.blit(self.background,(0,0))
+				self.sprites.draw(self.gameDisplay)
 
-			self.gameDisplay.blit(self.background,(0,0))
-			self.sprites.draw(self.gameDisplay)
+				pygame.display.flip()
 
-			pygame.display.flip()
+				alive,win = self.spaceship.getStatus()
 
-			alive,win = self.spaceship.getStatus()
-
-			if((not alive) or win):
-				GameExit = True
+				if not alive:
+					GameLose = True
+			if GameLose:
+				self.message_to_screen('You Lose',red,100,'comicsansms')
+				
 
 
 

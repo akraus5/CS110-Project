@@ -29,11 +29,16 @@ class Controller:
 		
 	def mainloop(self):
 		black = (0,0,0)
+<<<<<<< HEAD
 		red = (255,0,0)
+=======
+
+>>>>>>> 286af952bb7dd8662422d6afe9eb8eee72711b5a
 		#Start Timer
 
 		pygame.key.set_repeat(1,50)
 		GameExit = False
+<<<<<<< HEAD
 		GameLose = False
 		while not GameExit:
 			if not GameLose:
@@ -56,9 +61,32 @@ class Controller:
 
 				self.gameDisplay.blit(self.background,(0,0))
 				self.sprites.draw(self.gameDisplay)
+=======
+		while not GameExit:
+			self.background.fill(black)
+
+			#check for events/user input
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					GameExit = True
+				if event.type == pygame.KEYDOWN:
+					self.spaceship.move(event.key)
+
+			self.obstacle.move()
+			self.obstacle.change_dir()
+
+			if pygame.sprite.collide_rect(self.spaceship,self.obstacle):
+				self.spaceship.die()
+			if pygame.sprite.collide_rect(self.spaceship,self.resup):
+				self.spaceship.winLev()
+
+			self.gameDisplay.blit(self.background,(0,0))
+			self.sprites.draw(self.gameDisplay)
+>>>>>>> 286af952bb7dd8662422d6afe9eb8eee72711b5a
 
 				pygame.display.flip()
 
+<<<<<<< HEAD
 				alive,win = self.spaceship.getStatus()
 
 				if not alive:
@@ -66,6 +94,12 @@ class Controller:
 			if GameLose:
 				self.message_to_screen('You Lose',red,100,'comicsansms')
 				
+=======
+			alive,win = self.spaceship.getStatus()
+
+			if((not alive) or win):
+				GameExit = True
+>>>>>>> 286af952bb7dd8662422d6afe9eb8eee72711b5a
 
 
 

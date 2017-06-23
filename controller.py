@@ -34,6 +34,7 @@ class Controller:
 
 		pygame.key.set_repeat(1,50)
 		GameExit = False
+<<<<<<< HEAD
 		GameLose = False
 		while not GameExit:
 			if not GameLose:
@@ -45,6 +46,17 @@ class Controller:
 						GameExit = True
 					if event.type == pygame.KEYDOWN:
 						self.spaceship.move(event.key)
+=======
+		while not GameExit:	#Demo game, to be modified
+			self.background.fill(black)
+
+			#check for events/user input
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					GameExit = True
+				if event.type == pygame.KEYDOWN:
+					self.spaceship.move(event.key)
+>>>>>>> 286af952bb7dd8662422d6afe9eb8eee72711b5a
 
 				self.obstacle.move()
 				self.obstacle.change_dir()

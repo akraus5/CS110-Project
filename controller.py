@@ -22,7 +22,7 @@ class Controller:
 		pygame.display.set_caption('Game')
 
 	def initializeObjects(self):
-		self.obstacle = obstacle.Obstacle(self.scrW/2,self.scrH/2,self.scrW,self.scrH,'right',5)
+		self.obstacle = obstacle.Obstacle(self.scrW/2,self.scrH/2,self.scrW,self.scrH,'right')
 		self.spaceship = spaceship.SpaceShip(self.scrW,self.scrH,5)
 		self.resup = resup.Resup((self.scrW // 2) , ((self.scrH * 1) // 7))
 		self.sprites = pygame.sprite.RenderPlain((self.spaceship,self.obstacle,self.resup))	#setup main menue, as well as other objects
@@ -37,13 +37,50 @@ class Controller:
 		self.gameDisplay.blit(self.text,self.textRect)
 		pygame.display.flip()
 
+	def LoseWinMessage(self):
+		if self.GameLose:
+			self.message_to_screen('You Lose',RED,100,'comicsansms')
+			self.message_to_screen('Press C to play again or Q to quit',WHITE,30,'comicsansms',70)
+
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					self.GameExit = True
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_q:
+						self.GameExit = True
+					if event.key == pygame.K_c:
+						self.initializeObjects()
+						self.GameLose = False
+		if self.GameWin:
+			self.message_to_screen('You Win',RED,100,'comicsansms')
+			self.message_to_screen('Press C to play again or Q to quit',WHITE,30,'comicsansms',70)
+
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					self.GameExit = True
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_q:
+						self.GameExit = True
+					if event.key == pygame.K_c:
+						self.press_c_message()
+						if event.key == pygame.K_1:
+							self.initializeObjects()
+							self.GameLose = False
+						if event.key == pygame.K_2:
+							self.initializeObjects()
+							self.GameLose = False
+
+
+
 	def press_c_message(self):
+		self.gameDisplay.fill(BLACK)
 		self.gameDisplay.blit(self.background,(0,0))
+		pygame.display.flip()
 
 		if self.level == 1:
 			text = "You are tired from your journey\n do you go to sleep or a party?\n Press 1 to sleep, 2 to party"
 
-		self.message_to_screen(text,RED,10,'comicsansms')
+		self.message_to_screen(text,RED,15,'comicsansms')
 		'''
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
@@ -73,9 +110,7 @@ class Controller:
 						self.GameExit = True
 					if event.type == pygame.KEYDOWN:
 						self.spaceship.move(event.key)
-				#	elif:
-				#		event.type != pygame.KEYDOWN:
-				#		self.spaceship.move()
+				self.spaceship.move()
 
 
 				self.obstacle.move()
@@ -98,41 +133,7 @@ class Controller:
 				if win:
 					self.GameWin = True
 
-			if self.GameLose:
-				self.message_to_screen('You Lose',RED,100,'comicsansms')
-				self.message_to_screen('Press C to play again or Q to quit',WHITE,30,'comicsansms',70)
-
-				for event in pygame.event.get():
-					if event.type == pygame.QUIT:
-						self.GameExit = True
-					if event.type == pygame.KEYDOWN:
-						if event.key == pygame.K_q:
-							self.GameExit = True
-						if event.key == pygame.K_c:
-							self.initializeObjects()
-							self.GameLose = False
-
-			if self.GameWin:
-				self.message_to_screen('You Win',RED,100,'comicsansms')
-				self.message_to_screen('Press C to play again or Q to quit',WHITE,30,'comicsansms',70)
-
-				for event in pygame.event.get():
-					if event.type == pygame.QUIT:
-						self.GameExit = True
-					if event.type == pygame.KEYDOWN:
-						if event.key == pygame.K_q:
-							self.GameExit = True
-						if event.key == pygame.K_c:
-							self.press_c_message()
-
-						if event.key == pygame.K_1:
-							self.initializeObjects()
-							self.GameLose = False
-						if event.key == pygame.K_2:
-							self.initializeObjects()
-							self.GameLose = False
-
-
+			self.LoseWinMessage()
 
 
 

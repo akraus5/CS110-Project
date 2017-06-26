@@ -32,9 +32,10 @@ class Controller:
 
 		if self.level <2:
 			img = 'moon'
-		#elif self.level <3:
-		else:
+		elif self.level <3:
 			img = 'mars'
+		elif self.level <4:
+			img = 'satellite'
 
 		self.resup = resup.Resup(self.width//2, self.height//7,self.width,self.height,img)
 

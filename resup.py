@@ -4,7 +4,7 @@ import utility
 class Resup(pygame.sprite.Sprite):
 	"""endpoint object, when collision detected with spaceShip, level completes"""
 
-	def __init__(self, x_val, y_val, scrwidth,scrheight, restype = 'moon', moving = False):#		possibly scrW ,scrH,  sz = 20
+	def __init__(self, x_val, y_val, scrwidth,scrheight, restype = 'moon', moving = False, direction = 'right', spd = 1):#		possibly scrW ,scrH,  sz = 20
 		'''
 			Initialize resupply model
 			args: 	x_val: int, starting x position
@@ -17,7 +17,8 @@ class Resup(pygame.sprite.Sprite):
 		self.scrwidth = scrwidth
 		self.scrheight = scrheight
 		self.moving = moving
-		self.i = 1
+		self.spd = spd
+		self.dir = direction
 
 
 	def change_dir(self):
@@ -28,20 +29,18 @@ class Resup(pygame.sprite.Sprite):
 		'''
 		if (self.rect.x <= 0):
 			self.dir = 'right'
-		elif (self.rect.right >= WIDTH):
+		if (self.rect.right >= self.scrwidth):
 			self.dir = 'left'
 
 
-	def update(self):
-	
+	def update(self, moving = True):
+		self.moving = moving
 		if self.moving:
-			i += 1
-			if i == 10:
-				if (self.dir == 'left'):
-					self.rect.x -= self.spd
-				if (self.dir == 'right'):
-					self.rect.x += self.spd
-				i = 1
+			if (self.dir == 'left'):
+				self.rect.x -= self.spd
+			elif (self.dir == 'right'):
+				self.rect.x += self.spd
+			self.change_dir()
 	
 	def getX(self):
 		'''

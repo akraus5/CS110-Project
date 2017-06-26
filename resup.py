@@ -31,6 +31,7 @@ class Resup(pygame.sprite.Sprite):
 
 '''
 	def update(self):
+
 	'''
 		if moving:
 			i += 1

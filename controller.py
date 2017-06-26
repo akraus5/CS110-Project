@@ -8,35 +8,46 @@ BLACK = (0,0,0)
 RED = (255,0,0)
 WHITE = (255,255,255)
 
-WIDTH = 500
-HEIGHT = 1000
 
 class Controller:
 	"""Main clas of game, all actions occure in this class"""
 
 	def __init__(self):
 		pygame.init()
+		self.clock = pygame.time.Clock()
+		self.width = 500
+		self.height= 700
+
 		self.level = 0
-		self.gameDisplay = pygame.display.set_mode((WIDTH,HEIGHT))
+		self.gameDisplay = pygame.display.set_mode((self.width,self.height))
 		self.background = pygame.Surface(self.gameDisplay.get_size()).convert()
 		self.initializeObjects()
 
 		pygame.display.set_caption('Space Travel')
 
 	def initializeObjects(self, numobs=1):
-		self.spaceship = spaceship.SpaceShip(5)
-		self.resup = resup.Resup(WIDTH/ 2 , (HEIGHT* 1) // 7))
+		self.spaceship = spaceship.SpaceShip(self.width, self.height,5)
+	
+		img = ''
+
+		if self.level <2:
+			img = 'moon'
+		#elif self.level <3:
+		else:
+			img = 'mars'
+
+		self.resup = resup.Resup(self.width//2, self.height//7,self.width,self.height,img)
 
 		self.obstacle = []
 		for i in range(numobs):
-			posx = WIDTH/2
-			posy = HEIGHT/2
+			posx = self.width/2
+			posy = self.height/2
 
-			mydir = random.choice(['left','right','up','down'])
+			mydir = random.choice(['left','right','up'])
 
-			self.obstacle.append(obstacle.Obstacle(posx,posy,WIDTH,HEIGHT,mydir))
+			self.obstacle.append(obstacle.Obstacle(posx,posy,self.width,self.height,mydir))
 
-		self.sprites = pygame.sprite.group(self.spaceship, self.obstacle, self.resup)	#setup main menue, as well as other objects
+		self.sprites = pygame.sprite.RenderPlain((self.spaceship,) + tuple(self.obstacle)+ (self.resup,))	#setup main menue, as well as other objects
 	
 	# Source of message_to_screen() code: http://pygame.org/wiki/TextWrap
 	# draw some text into an area of a surface
@@ -44,9 +55,9 @@ class Controller:
 	# returns any text that didn't get blitted
 	def message_to_screen(self,text, color, sz, fnt, disp=0, aa=True, bkg=None):
 		rect=self.gameDisplay.get_rect()
-		rect.width -= (.25 * WIDTH)
-		rect.height -= (.25 * HEIGHT)
-		rect.center = (WIDTH/2,HIGHT/2 + disp)
+		rect.width -= (.25 * self.width)
+		rect.height -= (.25 * self.height)
+		rect.center = (self.width/2,self.height/2 + disp)
 
 		font = pygame.font.SysFont(fnt,sz)
 		#rect = Rect(rect)
@@ -87,19 +98,20 @@ class Controller:
 		return text
 
 	def press_cORq(self):
-	    self.waiting = True
-	    while self.waiting:
-		for event in pygame.event.get():
-		    if event.type == pygame.QUIT:
-		          pygame.quit()
-		          quit()
-		    if event.type == pygame.KEYDOWN:
-		        if event.key == pygame.K_q:
-		            pygame.quit()
-		            quit()
-		        elif event.key == pygame.K_c:
-		            self.waiting = False
-
+		self.waiting = True
+		while self.waiting:
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					pygame.quit()
+					quit()
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_q:
+						pygame.quit()
+						quit()
+					elif event.key == pygame.K_c:
+						self.waiting = False
+	#def intro_screen(self):
+	
 	def game_over_screen(self):
 		self.gameDisplay.fill(BLACK)
 		self.message_to_screen('You Lose',RED,100,'comicsansms')
@@ -107,13 +119,16 @@ class Controller:
 		pygame.display.flip()
 
 		self.press_cORq()
+		self.level = 0
 
 	def game_win_screen(self):
-		self.gameDisplay.fill(BLACK)
-		self.message_to_screen('You Win','comicsansms',RED,100)
-		self.message_to_screen('Press C to continue or Q to quit','comicsansms',WHITE,30,250)
+		if self.level!=0:
+			self.gameDisplay.fill(BLACK)
+			self.message_to_screen('You Win',RED,100,'comicsansms')
+			self.message_to_screen('Press C to continue or Q to quit',WHITE,30,'comicsansms',250)
+			pygame.display.flip()
 
-		self.press_cORq()
+			self.press_cORq()
 
 		self.gameDisplay.fill(BLACK)
 		if self.level == 0:
@@ -145,7 +160,9 @@ class Controller:
 
 		else: # temporary else statement
 			text = "Keep up the good work! Press 1 or 2 to continue."
-			elf.message_to_screen(text,WHITE,25,'orcastd')
+			self.message_to_screen(text,WHITE,25,'orcastd')
+
+		pygame.display.flip()
 
 		self.waiting = True
 		while self.waiting:
@@ -163,53 +180,57 @@ class Controller:
 						self.waiting = False
 					elif event.key == pygame.K_2:
 						if self.level == 0:
-							self.GameExit = True
+							pygame.quit()
+							quit()
 						else:
 							self.level += 1
 							self.initializeObjects(self.level)
 							self.waiting = False
-	def mainloop():
+
+	def mainloop(self):
 	# Game loop
 		gameExit = False
 		gameOver = False
-		gameWin = False
+		gameWin = True
+		pygame.key.set_repeat(1,50)
 		while not gameExit:
-		    if gameOver:
-			game_over_screen()
-			self.initializeObejcts()
-			gameOver = False
+			self.clock.tick(60)
+			if gameOver:
+				self.game_over_screen()
+				self.initializeObjects()
+				gameOver = False
+				self.game_win_screen()
 				          
-		    elif gameWin:
-			game_win_screen()
-			gameWin = False
+			elif gameWin:
+				self.game_win_screen()
+				gameWin = False
 				           
 		    # Keep loop running at the right speed
 		    #clock.tick(FPS)
 
 		    # Process input
-		    for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-			    gameExit = True
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					gameExit = True
 
 		    # Update
-		    self.all_sprites.update()
+			self.sprites.update()
 
 		    # Check to see if the spaceship hit an obstacle
-		    if pygame.sprite.collide_rect(self.spaceship,self.obstacle):
-			gameOver = True
+			for i in range(len(self.obstacle)):
+				if pygame.sprite.collide_rect(self.spaceship,self.obstacle[i]):
+					gameOver = True
 
 		    # Check to see if the spaceship hit the resup
-		    elif pygame.sprite.collide_rect(self.spaceship,self.resup):
-			gameWin = True
+			if pygame.sprite.collide_rect(self.spaceship,self.resup):
+				gameWin = True
 				           
 		    # Draw
-		    self.gameDisplay.fill(BLACK)
-		    self.all_sprites.draw(gameDisplay)
+			self.gameDisplay.fill(BLACK)
+			self.sprites.draw(self.gameDisplay)
 
 
-		    pygame.display.flip()
-
-
+			pygame.display.flip()
 
 		pygame.quit()
 		quit()
@@ -217,6 +238,6 @@ class Controller:
 
 
 def main():
-	game = Controller(500,500)
+	game = Controller()
 	game.mainloop()
 main()

@@ -4,7 +4,7 @@ import utility
 class Obstacle(pygame.sprite.Sprite):
 	"""Obstacle object, decreases in size as game goes on, more appear in the game as time goes on"""
 
-	def __init__(self, x_val, y_val, stDir='right', speed = 1, size = 'small' ):#Y value is at top of screen
+	def __init__(self, x_val, y_val, scrwidth,scrheight, stDir='right', speed = 5, size = 'small'):#Y value is at top of screen
 		'''
 			Initialize Obstacle
 			args: 	x_val: int, starting x position
@@ -21,8 +21,10 @@ class Obstacle(pygame.sprite.Sprite):
 		self.rect.center = (x_val,y_val)
 		self.dir = stDir
 		self.spd = speed
+		self.scrwidth = scrwidth
+		self.scrheight = scrheight
 
-	#def getX(self):
+	def getX(self):
 		'''
 			Get x value of obstacle
 			args: None
@@ -30,7 +32,7 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.x
 
-	#def getY(self):
+	def getY(self):
 		'''
 			Get y value of obstacle
 			args: None
@@ -38,8 +40,8 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.y
 
-	#def getSz(self):
-		#return self.sz
+	def getSz(self):
+		return self.sz
 
 	def change_dir(self):
 		'''
@@ -49,11 +51,11 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		if (self.rect.x <= 0):
 			self.dir = 'right'
-		elif (self.rect.right >= WIDTH):
+		elif (self.rect.right >= self.scrwidth):
 			self.dir = 'left'
 		if (self.rect.y <= 0):
 			self.dir = 'down'
-		elif (self.rect.bottom >= HEIGHT):
+		elif (self.rect.bottom >= self.scrheight):
 			self.dir = 'up'###mess with speed maybe
 
 	def update(self):

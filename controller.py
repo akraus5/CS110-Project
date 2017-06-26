@@ -25,16 +25,18 @@ class Controller:
 
 		pygame.display.set_caption('Space Travel')
 
-	def initializeObjects(self, numobs=1):
+	def initializeObjects(self, numobs=1,spacedir = True):
 		self.spaceship = spaceship.SpaceShip(self.width, self.height,5)
+		self.spaceship.change_lucid(spacedir)
 	
 		img = ''
 
 		if self.level <2:
 			img = 'moon'
-		#elif self.level <3:
-		else:
+		elif self.level <3:
 			img = 'mars'
+		elif self.level <4:
+			img = 'satellite'
 
 		self.resup = resup.Resup(self.width//2, self.height//7,self.width,self.height,img)
 
@@ -156,7 +158,8 @@ class Controller:
 			self.message_to_screen(text,WHITE,25,'orcastd')
 
 		elif self.level == 3:
-			text = "Jupiter"
+			text = "hi"
+			self.message_to_screen(text,WHITE,25,'orcastd')
 
 		else: # temporary else statement
 			text = "Keep up the good work! Press 1 or 2 to continue."
@@ -184,7 +187,7 @@ class Controller:
 							quit()
 						else:
 							self.level += 1
-							self.initializeObjects(self.level)
+							self.initializeObjects(self.level,False)
 							self.waiting = False
 
 	def mainloop(self):

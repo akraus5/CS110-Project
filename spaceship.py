@@ -25,16 +25,17 @@ class SpaceShip(pygame.sprite.Sprite):
 
 	#def die(self):
 		#Meant to end main loop and end game
-		self.alive = False
+		#self.alive = False
 
 	#def winLev(self):
 		#Ends subloop for each level
-		self.win = True
-	def change_lucid(choice):
+		#self.win = True
+
+	def change_lucid(self,choice):
 		self.lucid = choice
 
 	#def getStatus(self):
-		return self.alive,self.win
+		#return self.alive,self.win
 
 	#def strtLev(self):#
 		##########resets ship parameters for next level
@@ -46,7 +47,7 @@ class SpaceShip(pygame.sprite.Sprite):
 			args: None
 			return: self.rect.x (int)
 		'''
-		return self.rect.x
+		#return self.rect.x
 
 	#def getY(self):	#get Y val
 		'''
@@ -54,7 +55,7 @@ class SpaceShip(pygame.sprite.Sprite):
 			args: None
 			return: self.rect.x (int)
 		'''
-		return self.rect.y
+		#return self.rect.y
 
 	def update(self):
 		'''
@@ -80,27 +81,20 @@ class SpaceShip(pygame.sprite.Sprite):
 
 
 		########right, left key:########
-		if ((keys[pygame.K_LEFT]) and (self.rect.x > 0)):
-			self.rect.x -= self.speed_x
 
-		elif ((keys[pygame.K_RIGHT]) and ((self.rect.right) < self.scrwidth)):
-			self.rect.x += self.speed_x
-
-		'''
 			#self.lucid bool, used for multiple choice. if True, ship works as expected, if False, left and right keys reversed
 		if self.lucid:
 			if ((keys[pygame.K_LEFT]) and (self.rect.x > 0)):
 				self.rect.x -= self.speed_x
 
-			elif ((keys[pygame.K_RIGHT]) and ((self.rect.right) < WIDTH)):
+			elif ((keys[pygame.K_RIGHT]) and ((self.rect.right) < self.scrwidth)):
 				self.rect.x += self.speed_x
 		else:
-			if ((keys[pygame.K_LEFT]) and (self.rect.x > 0)):
+			if ((keys[pygame.K_LEFT]) and ((self.rect.right) < self.scrwidth)):
 				self.rect.x += self.speed_x
 
-			elif ((keys[pygame.K_RIGHT]) and ((self.rect.right) < WIDTH)):
+			elif ((keys[pygame.K_RIGHT]) and (self.rect.x > 0)):
 				self.rect.x -= self.speed_x
-		'''
 
 	#def __str__(self):
 		'''
@@ -108,4 +102,4 @@ class SpaceShip(pygame.sprite.Sprite):
 			args: None
 			return: self.alive (str)
 		'''
-		return str(self.alive)
+	#	return str(self.alive)

@@ -18,6 +18,7 @@ class SpaceShip(pygame.sprite.Sprite):
 		#self.alive = True
 		#self.win = False
 		#self.sprite
+		#self.lucid =True
 
 
 	#def die(self):
@@ -27,6 +28,11 @@ class SpaceShip(pygame.sprite.Sprite):
 	#def winLev(self):
 		#Ends subloop for each level
 		self.win = True
+	#def change_lucid(choice = True)
+		if choice == True:
+			self.lucid = True
+		else:
+			self.lucid = False
 
 	#def getStatus(self):
 		return self.alive,self.win
@@ -57,12 +63,7 @@ class SpaceShip(pygame.sprite.Sprite):
 			args: 	evnt: event.key, input key
 			return: None
 		'''
-		'''
-			possible change, adding acceleration to up and down key, up key accelerates, downkey decellerates.
-
-		########speed becomes speed_x in __init__(), new parameter speed_y.		speed_y starts as zero########
-		'''
-		keys - pygame.key.get_pressed()
+		keys = pygame.key.get_pressed()
 		if (keys[pygame.K_UP]):
 			self.speed_y += .5
 
@@ -71,7 +72,7 @@ class SpaceShip(pygame.sprite.Sprite):
 		
 		self.rect.y -= self.speed_y
 
-		if not (((self.rect.y + self.shipH) < self.scrht)):
+		if not (((self.rect.bottom) < self.HEIGHT)):
 			self.rect.y = self.scrht - self.shipH
 			self.speed_y = -1*(self.speed_y) #or -1.5 as a penalty for missing resup
 		elif not (self.rect.y > 0): 
@@ -86,13 +87,21 @@ class SpaceShip(pygame.sprite.Sprite):
 		elif ((keys[pygame.K_RIGHT]) and ((self.rect.right) < WIDTH)):
 			self.rect.x += self.speed_x
 
-	#def update(self):
 		'''
-			TBD
-			args: None
-			return: None
+			#self.lucid bool, used for multiple choice. if True, ship works as expected, if False, left and right keys reversed
+		if self.lucid:
+			if ((keys[pygame.K_LEFT]) and (self.rect.x > 0)):
+				self.rect.x -= self.speed_x
+
+			elif ((keys[pygame.K_RIGHT]) and ((self.rect.right) < WIDTH)):
+				self.rect.x += self.speed_x
+		else:
+			if ((keys[pygame.K_LEFT]) and (self.rect.x > 0)):
+				self.rect.x += self.speed_x
+
+			elif ((keys[pygame.K_RIGHT]) and ((self.rect.right) < WIDTH)):
+				self.rect.x -= self.speed_x
 		'''
-		print('updating position')
 
 	#def __str__(self):
 		'''

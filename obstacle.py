@@ -73,12 +73,4 @@ class Obstacle(pygame.sprite.Sprite):
 
 		self.change_dir()
 
-	#def update(self):
-		'''
-			TBD
-			args: None
-			return: None
-		'''
-		print('Updating Position')
-
 	#def __str__(self):

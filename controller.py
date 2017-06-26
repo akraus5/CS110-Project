@@ -18,15 +18,16 @@ class Controller:
 		self.width = 500
 		self.height= 700
 
-		self.level = 0
+		self.level = 1
 		self.gameDisplay = pygame.display.set_mode((self.width,self.height))
 		self.background = pygame.Surface(self.gameDisplay.get_size()).convert()
 		self.initializeObjects()
 
 		pygame.display.set_caption('Space Travel')
 
-	def initializeObjects(self, numobs=1):
+	def initializeObjects(self, numobs=1,notReverse = True):
 		self.spaceship = spaceship.SpaceShip(self.width, self.height,5)
+		self.spaceship.change_lucid(notReverse)
 
 		img = ''
 
@@ -34,7 +35,8 @@ class Controller:
 			img = 'moon'
 		elif self.level <3:
 			img = 'mars'
-		elif self.level <4:
+		#elif self.level <4:
+		else:
 			img = 'satellite'
 
 		self.resup = resup.Resup(self.width//2, self.height//7,self.width,self.height,img)
@@ -99,8 +101,9 @@ class Controller:
 		return text
 
 	def press_cORq(self):
-		self.waiting = True
-		while self.waiting:
+		pygame.key.set_repeat(1,50)
+		waiting = True
+		while waiting:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
@@ -110,8 +113,21 @@ class Controller:
 						pygame.quit()
 						quit()
 					elif event.key == pygame.K_c:
-						self.waiting = False
-	#def intro_screen(self):
+						waiting = False
+	def intro_screen(self):
+		
+		self.gameDisplay.fill(BLACK)
+
+		text = "Welcome traveller. Your mission is about to begin. You are headed to the Far Colony, the furthest human outreach "
+		text += "post from Earth, to help the colony advance their transgalactic Warp Drive capabilities. The Far Colony is located far beyond "
+		text += "the edge of our solar system. You do not have enough food or supplies to make it there in one shot. Lucky for you, there "
+		text += "are several resupply locations on the route. Your ship launches tomorrow. Do you accept [C] or deny [Q] the mission?"
+
+		self.message_to_screen(text,WHITE,25,'orcastd')
+		pygame.display.flip()
+
+		self.press_cORq()
+
 
 	def game_over_screen(self):
 		self.gameDisplay.fill(BLACK)
@@ -120,27 +136,18 @@ class Controller:
 		pygame.display.flip()
 
 		self.press_cORq()
-		self.level = 0
 
 	def game_win_screen(self):
-		if self.level!=0:
-			self.gameDisplay.fill(BLACK)
-			self.message_to_screen('You Win',RED,100,'comicsansms')
-			self.message_to_screen('Press C to continue or Q to quit',WHITE,30,'comicsansms',250)
-			pygame.display.flip()
-
-			self.press_cORq()
 
 		self.gameDisplay.fill(BLACK)
-		if self.level == 0:
-			text = "Welcome traveller. Your mission is about to begin. You are headed to the Far Colony, the furthest human outreach "
-			text += "post from Earth, to help the colony advance their transgalactic Warp Drive capabilities. The Far Colony is located far beyond "
-			text += "the edge of our solar system. You do not have enough food or supplies to make it there in one shot. Lucky for you, there "
-			text += "are several resupply locations on the route. Your ship launches tomorrow. Do you accept [1] or deny [2] the mission?"
+		self.message_to_screen('You Win',RED,100,'comicsansms')
+		self.message_to_screen('Press C to continue or Q to quit',WHITE,30,'comicsansms',250)
+		pygame.display.flip()
 
-			self.message_to_screen(text,WHITE,25,'orcastd')
+		self.press_cORq()
 
-		elif self.level == 1:
+		self.gameDisplay.fill(BLACK)
+		if self.level == 1:
 			text = "You are exhausted from your journey, but some of your "
 			text += "friends are throwing a party. Do you go to the party, or "
 			text += "stay in for the night? "
@@ -157,7 +164,8 @@ class Controller:
 			self.message_to_screen(text,WHITE,25,'orcastd')
 
 		elif self.level == 3:
-			text = "Jupiter"
+			text = "The POD was the first checkpoint satellite in our solar system. All ships are required to dock to the POD and get approval before passing Jupiter. However, when I told the POD authorities that I am being sent on a mission to the Far Colony, they laugh and say that there are no outreach posts beyond the POD. I knew that the Far Colony was a top secret research base, but I did not know that even the POD authorities were not aware of its existence. I can either try contacting my boss back on Earth for help, but through unencrypted channels [1], or leave the POD and risk continuing past Jupiter without detection [2]."
+			self.message_to_screen(text,WHITE,25,'orcastd')
 
 		else: # temporary else statement
 			text = "Keep up the good work! Press 1 or 2 to continue."
@@ -165,8 +173,8 @@ class Controller:
 
 		pygame.display.flip()
 
-		self.waiting = True
-		while self.waiting:
+		waiting = True
+		while waiting:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
@@ -176,31 +184,41 @@ class Controller:
 						pygame.quit()
 						quit()
 					elif event.key == pygame.K_1:
+						if self.level == 1:
+							notReverse = False
+						if self.level == 2:
+							notReverse = True
+						if self.level == 3:
+							notReverse = True
 						self.level += 1
-						self.initializeObjects(self.level)
-						self.waiting = False
+						self.initializeObjects(self.level,notReverse)
+						waiting = False
 					elif event.key == pygame.K_2:
-						if self.level == 0:
-							pygame.quit()
-							quit()
-						else:
-							self.level += 1
-							self.initializeObjects(self.level)
-							self.waiting = False
+						if self.level == 1:
+							notReverse = True
+						if self.level == 2:
+							notReverse = False
+						if self.level == 3:
+							notReverse = False
+						self.level += 1
+						self.initializeObjects(self.level,notReverse)
+						waiting = False
 
 	def mainloop(self):
 	# Game loop
+		self.intro_screen()
 		gameExit = False
 		gameOver = False
-		gameWin = True
+		gameWin = False
 		pygame.key.set_repeat(1,50)
 		while not gameExit:
 			self.clock.tick(60)
 			if gameOver:
 				self.game_over_screen()
-				self.initializeObjects()
+				self.level = 1
+				self.initializeObjects(self.level)
+				self.intro_screen()
 				gameOver = False
-				self.game_win_screen()
 
 			elif gameWin:
 				self.game_win_screen()

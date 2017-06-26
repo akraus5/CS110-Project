@@ -1,6 +1,10 @@
+
+
+
 def level1():
 	'''
 		To Be Edited, used for levels, called from main loop in controller.
+
 
 
 	while not GameExit:	#Demo game, to be modified
@@ -31,6 +35,7 @@ def level1():
 			if((not alive) or win):
 				GameExit = True
 	'''
+
 def level2():
 
 
@@ -38,5 +43,3 @@ def level3():
 
 
 def level4():
-
-

@@ -25,18 +25,16 @@ class Controller:
 
 		pygame.display.set_caption('Space Travel')
 
-	def initializeObjects(self, numobs=1,spacedir = True):
+	def initializeObjects(self, numobs=1):
 		self.spaceship = spaceship.SpaceShip(self.width, self.height,5)
-		self.spaceship.change_lucid(spacedir)
-	
+
 		img = ''
 
 		if self.level <2:
 			img = 'moon'
-		elif self.level <3:
+		#elif self.level <3:
+		else:
 			img = 'mars'
-		elif self.level <4:
-			img = 'satellite'
 
 		self.resup = resup.Resup(self.width//2, self.height//7,self.width,self.height,img)
 
@@ -50,7 +48,7 @@ class Controller:
 			self.obstacle.append(obstacle.Obstacle(posx,posy,self.width,self.height,mydir))
 
 		self.sprites = pygame.sprite.RenderPlain((self.spaceship,) + tuple(self.obstacle)+ (self.resup,))	#setup main menue, as well as other objects
-	
+
 	# Source of message_to_screen() code: http://pygame.org/wiki/TextWrap
 	# draw some text into an area of a surface
 	# automatically wraps words
@@ -113,7 +111,7 @@ class Controller:
 					elif event.key == pygame.K_c:
 						self.waiting = False
 	#def intro_screen(self):
-	
+
 	def game_over_screen(self):
 		self.gameDisplay.fill(BLACK)
 		self.message_to_screen('You Lose',RED,100,'comicsansms')
@@ -138,7 +136,7 @@ class Controller:
 			text += "post from Earth, to help the colony advance their transgalactic Warp Drive capabilities. The Far Colony is located far beyond "
 			text += "the edge of our solar system. You do not have enough food or supplies to make it there in one shot. Lucky for you, there "
 			text += "are several resupply locations on the route. Your ship launches tomorrow. Do you accept [1] or deny [2] the mission?"
-		
+
 			self.message_to_screen(text,WHITE,25,'orcastd')
 
 		elif self.level == 1:
@@ -158,8 +156,7 @@ class Controller:
 			self.message_to_screen(text,WHITE,25,'orcastd')
 
 		elif self.level == 3:
-			text = "hi"
-			self.message_to_screen(text,WHITE,25,'orcastd')
+			text = "Jupiter"
 
 		else: # temporary else statement
 			text = "Keep up the good work! Press 1 or 2 to continue."
@@ -187,7 +184,7 @@ class Controller:
 							quit()
 						else:
 							self.level += 1
-							self.initializeObjects(self.level,False)
+							self.initializeObjects(self.level)
 							self.waiting = False
 
 	def mainloop(self):
@@ -203,11 +200,11 @@ class Controller:
 				self.initializeObjects()
 				gameOver = False
 				self.game_win_screen()
-				          
+
 			elif gameWin:
 				self.game_win_screen()
 				gameWin = False
-				           
+
 		    # Keep loop running at the right speed
 		    #clock.tick(FPS)
 
@@ -227,7 +224,7 @@ class Controller:
 		    # Check to see if the spaceship hit the resup
 			if pygame.sprite.collide_rect(self.spaceship,self.resup):
 				gameWin = True
-				           
+
 		    # Draw
 			self.gameDisplay.fill(BLACK)
 			self.sprites.draw(self.gameDisplay)

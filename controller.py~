@@ -217,7 +217,7 @@ class Controller:
 				self.game_over_screen()
 				self.level = 1
 				self.initializeObjects(self.level)
-				self.intro()
+				self.intro_screen()
 				gameOver = False
 
 			elif gameWin:

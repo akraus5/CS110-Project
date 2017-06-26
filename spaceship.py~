@@ -79,7 +79,7 @@ class SpaceShip(pygame.sprite.Sprite):
 			self.rect.y = self.scrht - self.shipH
 			self.speed_y = -1*(self.speed_y) #or -1.5 as a penalty for missing resup
 		elif not (self.rect.y > 0): 
-			self.rect.y = 0 + self.shipH
+			self.rect.y = 0
 			self.speed_y = -1*(self.speed_y) #or -1.5 as a penalty for missing resup
 
 

@@ -4,7 +4,7 @@ import utility
 class Obstacle(pygame.sprite.Sprite):
 	"""Obstacle object, decreases in size as game goes on, more appear in the game as time goes on"""
 
-	def __init__(self, x_val, y_val, scrW ,scrH, stDir='right', speed = 1, size = 'small' ):#Y value is at top of screen
+	def __init__(self, x_val, y_val, stDir='right', speed = 1, size = 'small' ):#Y value is at top of screen
 		'''
 			Initialize Obstacle
 			args: 	x_val: int, starting x position
@@ -18,16 +18,11 @@ class Obstacle(pygame.sprite.Sprite):
 
 		pygame.sprite.Sprite.__init__(self)		#Possibly change picture file depending on size, or set input to controller
 		self.image, self.rect = utility.LoadImage('asteroid_' + size + '.png', -1)
-		self.scrW = scrW
-		self.scrH = scrH
-		self.width = self.rect.width
-		self.height = self.rect.height
-		self.rect.x = x_val - self.width // 2
-		self.rect.y = y_val - self.height // 2
+		self.rect.center = (x_val,y_val)
 		self.dir = stDir
 		self.spd = speed
 
-	def getX(self):
+	#def getX(self):
 		'''
 			Get x value of obstacle
 			args: None
@@ -35,7 +30,7 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.x
 
-	def getY(self):
+	#def getY(self):
 		'''
 			Get y value of obstacle
 			args: None
@@ -54,14 +49,14 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		if (self.rect.x <= 0):
 			self.dir = 'right'
-		elif (self.rect.x + self.width >= self.scrW):
+		elif (self.rect.right >= WIDTH):
 			self.dir = 'left'
 		if (self.rect.y <= 0):
 			self.dir = 'down'
-		elif (self.rect.y + self.height >= self.scrH):
+		elif (self.rect.bottom >= HEIGHT):
 			self.dir = 'up'###mess with speed maybe
 
-	def move(self):
+	def update(self):
 		'''
 			Used to move automatically
 			args: None
@@ -76,7 +71,9 @@ class Obstacle(pygame.sprite.Sprite):
 		if (self.dir == 'down'):
 			self.rect.y += self.spd
 
-	def update(self):
+		self.change_dir()
+
+	#def update(self):
 		'''
 			TBD
 			args: None

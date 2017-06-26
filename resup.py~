@@ -13,11 +13,12 @@ class Resup(pygame.sprite.Sprite):
 		'''
 		pygame.sprite.Sprite.__init__(self)		#Possibly change picture file depending on size, or set input to controller
 		self.image, self.rect = utility.LoadImage('moon.png', -1)
-		self.rect.center = (x_val,y_val)
+		#self.scrW = scrW
+		#self.scrH = scrH
+		self.rect.x = x_val #- self.sz // 2
+		self.rect.y = y_val #- self.sz // 2
 
-	def update(self):
-		
-	#def getX(self):
+	def getX(self):
 		'''
 			Get x value of resupply model
 			args: None
@@ -25,7 +26,7 @@ class Resup(pygame.sprite.Sprite):
 		'''
 		return self.rect.x
 
-	#def getY(self):
+	def getY(self):
 		'''
 			Get y value of resupply model
 			args: None
@@ -36,7 +37,7 @@ class Resup(pygame.sprite.Sprite):
 	#def getSz(self):
 	#	return self.sz
 
-	#def update(self):
+	def update(self):
 		'''
 			TBD
 			args: None

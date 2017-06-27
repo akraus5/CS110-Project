@@ -11,12 +11,14 @@ class Obstacle(pygame.sprite.Sprite):
 					y_val: int, starting y position
 					scrW: int, screen width
 					scrH: int, screen height
-					stDir: string, starting direction (accepts 'left', 'right', 'up', 'down')
+					stDirx: string, starting direction (accepts 'left', 'right')
+					stDirx: string, starting direction (accepts 'up', 'down')
 					speed: int, x and y increment amount
 			return: None
 		'''
 
-		pygame.sprite.Sprite.__init__(self)		#Possibly change picture file depending on size, or set input to controller
+		pygame.sprite.Sprite.__init__(self)
+
 		self.image, self.rect = utility.LoadImage('asteroid_' + size + '.png', -1)
 		self.rect.center = (x_val,y_val)
 		self.dirx = stDirx
@@ -56,18 +58,20 @@ class Obstacle(pygame.sprite.Sprite):
 			args: None
 			return: None
 		'''
-		#Possible change to self.dir, self.dir split in to self.dirx, being left/right, and self.diry, being up and down 
-		
 
 		if collide:
 			if self.dirx == 'right':
 				self.dirx = 'left'
 			elif self.dirx == 'left':
 				self.dirx = 'right'
+			else:
+				self.dirx = 'left'
 			if self.diry == 'up':
 				self.diry = 'down'
 			elif self.diry == 'down':
 				self.diry = 'up'
+			else:
+				self.diry = 'down'
 
 
 		if (self.rect.x <= 0):

@@ -21,15 +21,22 @@ class Resup(pygame.sprite.Sprite):
 		self.dir = direction
 
 
-	def change_dir(self):
+	def change_dir(self, collide = False):
 		'''
 			#Used to automatically change direction after move() is called
 			#args: None
 			#return: None
 		'''
+
+		if collide:
+			if self.dir == 'right':
+				self.dir = 'left'
+			elif self.dir == 'left':
+				self.dir = 'right'
+
 		if (self.rect.x <= 0):
 			self.dir = 'right'
-		if (self.rect.right >= self.scrwidth):
+		elif (self.rect.right >= self.scrwidth):
 			self.dir = 'left'
 
 

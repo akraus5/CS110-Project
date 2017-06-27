@@ -43,12 +43,23 @@ class Obstacle(pygame.sprite.Sprite):
 	def getSz(self):
 		return self.sz
 
-	def change_dir(self):
+	def change_dir(self, collide = False):
 		'''
 			Used to automatically change direction after move() is called
 			args: None
 			return: None
 		'''
+		if collide:
+			if self.dir == 'right':
+				self.dir = 'left'
+			elif self.dir == 'left':
+				self.dir = 'right'
+			if self.dir == 'up':
+				self.dir = 'down'
+			elif self.dir == 'down':
+				self.dir = 'up'
+
+
 		if (self.rect.x <= 0):
 			self.dir = 'right'
 		elif (self.rect.right >= self.scrwidth):

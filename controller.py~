@@ -17,7 +17,6 @@ class Controller:
 		self.clock = pygame.time.Clock()
 		self.width = 500
 		self.height= 700
-
 		self.level = 1
 		self.gameDisplay = pygame.display.set_mode((self.width,self.height))
 		self.background = pygame.Surface(self.gameDisplay.get_size()).convert()
@@ -250,8 +249,9 @@ class Controller:
 			for i in range(len(self.obstacle)):
 				if pygame.sprite.collide_rect(self.spaceship,self.obstacle[i]):
 					gameOver = True
-				self.obstacle[i].change_dir(pygame.sprite.collide_rect(self.resup,self.obstacle[i]))
-
+				col = (pygame.sprite.collide_rect(self.resup,self.obstacle[i]))
+				self.obstacle[i].change_dir(col)
+				self.resup.change_dir(col)
 		    # Check to see if the spaceship hit the resup
 			if pygame.sprite.collide_rect(self.spaceship,self.resup):
 				gameWin = True

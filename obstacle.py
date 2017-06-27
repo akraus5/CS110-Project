@@ -32,6 +32,9 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.x
 
+	def setX(self):
+		self.rect.x = self.rect.x - self.rect.width
+
 	def getY(self):
 		'''
 			Get y value of obstacle
@@ -40,8 +43,11 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.y
 
-	def getSz(self):
-		return self.sz
+	def setY(self):
+		self.rect.y = self.rect.y - self.rect.width
+
+	#def getSz(self):
+	#	return self.sz
 
 	def change_dir(self, collide = False):
 		'''

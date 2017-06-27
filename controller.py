@@ -2,6 +2,7 @@
 import obstacle,spaceship,resup
 #import levelpack
 import pygame
+import json
 import random
 
 BLACK = (0,0,0)
@@ -18,15 +19,25 @@ class Controller:
 		self.width = 500
 		self.height= 700
 		self.level = 1
+		self.notReverse = True
 		self.gameDisplay = pygame.display.set_mode((self.width,self.height))
 		self.background = pygame.Surface(self.gameDisplay.get_size()).convert()
 		self.initializeObjects()
+		
+		try:
+			ptr= open('story.json','r')
+			self.story = json.loads(ptr.read())
+		except:
+			print('Cannot find the file')
+		else:
+			ptr.close()
 
 		pygame.display.set_caption('Space Travel')
 
-	def initializeObjects(self, numobs=1,notReverse = True):
+	def initializeObjects(self):
 		self.spaceship = spaceship.SpaceShip(self.width, self.height,5)
-		self.spaceship.change_lucid(notReverse)
+		self.spaceship.change_lucid(self.notReverse)
+		numobs = self.level
 
 		img = ''
 		direction = random.choice(['right','left'])
@@ -46,8 +57,8 @@ class Controller:
 
 		self.obstacle = []
 		for i in range(numobs):
-			posx = random.randrange(0,self.width)
-			posy = random.randrange(self.resup.rect.bottom,self.spaceship.rect.top)
+			posx = 0
+			posy = 0
 
 			mydirx = random.choice(['left','right',None])
 			mydiry = random.choice(['up',None])			
@@ -128,12 +139,7 @@ class Controller:
 		
 		self.gameDisplay.fill(BLACK)
 
-		text = "Welcome traveller. Your mission is about to begin. You are headed to the Far Colony, the furthest human outreach "
-		text += "post from Earth, to help the colony advance their transgalactic Warp Drive capabilities. The Far Colony is located far beyond "
-		text += "the edge of our solar system. You do not have enough food or supplies to make it there in one shot. Lucky for you, there "
-		text += "are several resupply locations on the route. Your ship launches tomorrow. Do you accept [C] or deny [Q] the mission?"
-
-		self.message_to_screen(text,WHITE,25,'orcastd')
+		self.message_to_screen(self.story['start'],WHITE,25,'orcastd')
 		pygame.display.flip()
 
 		self.press_cORq()
@@ -147,6 +153,7 @@ class Controller:
 
 		self.press_cORq()
 
+	
 	def game_win_screen(self):
 
 		self.gameDisplay.fill(BLACK)
@@ -158,32 +165,19 @@ class Controller:
 
 		self.gameDisplay.fill(BLACK)
 		if self.level == 1:
-			text = "You are exhausted from your journey, but some of your "
-			text += "friends are throwing a party. Do you go to the party, or "
-			text += "stay in for the night? "
-			text += "Press 1 to go to party, press 2 to head to sleep. "
-			text += "Q to quit"
-			self.message_to_screen(text,WHITE,25,'orcastd')
+			self.message_to_screen(self.story['lev1'],WHITE,25,'orcastd')
 
 		elif self.level == 2:
-			text = "You have finally made it to the Curiosity Center of Mars. You are ready to start "
-			text += "resupplying your ship with fuel, food, and water, when a message is displayed on your ship's dashboard. The message "
-			text += "reads 'Warning: Water may contain R. horus, a bacterial species of Mars origin. Without proper filtration, "
-			text += "the water may be toxic. Select a filtration method: activated carbon [1] or coagulation [2]'"
-			text += "                                 Which will you choose?"
-			self.message_to_screen(text,WHITE,25,'orcastd')
+			self.message_to_screen(self.story['lev2'],WHITE,25,'orcastd')
 
 		elif self.level == 3:
-			text = "The POD was the first checkpoint satellite in our solar system. All ships are required to dock to the POD and get approval before passing Jupiter. However, when I told the POD authorities that I am being sent on a mission to the Far Colony, they laugh and say that there are no outreach posts beyond the POD. I knew that the Far Colony was a top secret research base, but I did not know that even the POD authorities were not aware of its existence. I can either try contacting my boss back on Earth for help, but through unencrypted channels [1], or leave the POD and risk continuing past Jupiter without detection [2]."
-			self.message_to_screen(text,WHITE,25,'orcastd')
-
-		else: # temporary else statement
-			text = "Keep up the good work! Press 1 or 2 to continue."
-			self.message_to_screen(text,WHITE,25,'orcastd')
-
+			self.message_to_screen(self.story['lev3'],WHITE,25,'orcastd')
+		elif self.level == 4:
+			self.message_to_screen(self.story['fin'],WHITE,25,'orcastd')
 		pygame.display.flip()
-
+	
 		waiting = True
+		pygame.key.set_repeat(1,50)
 		while waiting:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
@@ -193,26 +187,27 @@ class Controller:
 					if event.key == pygame.K_q:
 						pygame.quit()
 						quit()
+					if event.key == pygame.K_c:
+						if self.level == 4:
+							waiting = False
 					elif event.key == pygame.K_1:
 						if self.level == 1:
-							notReverse = False
+							self.notReverse = False
 						if self.level == 2:
-							notReverse = True
+							self.notReverse = True
 						if self.level == 3:
-							notReverse = True
-						self.level += 1
-						self.initializeObjects(self.level,notReverse)
-						waiting = False
+							self.notReverse = True
+						if self.level!=4:
+							waiting = False
 					elif event.key == pygame.K_2:
 						if self.level == 1:
-							notReverse = True
+							self.notReverse = True
 						if self.level == 2:
-							notReverse = False
+							self.notReverse = False
 						if self.level == 3:
-							notReverse = False
-						self.level += 1
-						self.initializeObjects(self.level,notReverse)
-						waiting = False
+							self.notReverse = False
+						if self.level!=4:
+							waiting = False
 
 	def mainloop(self):
 	# Game loop
@@ -226,13 +221,21 @@ class Controller:
 			if gameOver:
 				self.game_over_screen()
 				self.level = 1
-				self.initializeObjects(self.level)
+				self.initializeObjects()
 				self.intro_screen()
 				gameOver = False
 
 			elif gameWin:
 				self.game_win_screen()
 				gameWin = False
+				if self.level ==4:
+					self.level = 1
+					self.initializeObjects()
+					self.intro_screen()
+				else:
+					self.level += 1
+					self.initializeObjects()
+
 
 		    # Keep loop running at the right speed
 		    #clock.tick(FPS)

@@ -33,8 +33,7 @@ class Resup(pygame.sprite.Sprite):
 			self.dir = 'left'
 
 
-	def update(self, moving = True):
-		self.moving = moving
+	def update(self):
 		if self.moving:
 			if (self.dir == 'left'):
 				self.rect.x -= self.spd

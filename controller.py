@@ -30,19 +30,20 @@ class Controller:
 		self.spaceship.change_lucid(notReverse)
 
 		img = ''
-
+		direction = random.choice(['right','left'])
 		if self.level == 1:
 			img = 'moon'
+			self.resup = resup.Resup(self.width/2, self.height/7,self.width,self.height,img)
 		elif self.level == 2:
 			img = 'mars'
+			self.resup = resup.Resup(self.width/2, self.height/7,self.width,self.height,img,True,direction)
 		elif self.level == 3:
 			img = 'POD_small'
+			self.resup = resup.Resup(self.width/2, self.height/7,self.width,self.height,img,True,direction,2)
 		else:
 			img = 'satellite'
+			self.resup = resup.Resup(self.width/2, self.height/7,self.width,self.height,img,True,direction,3)
 
-		
-
-		self.resup = resup.Resup(self.width/2, self.height/7,self.width,self.height,img)
 
 		self.obstacle = []
 		for i in range(numobs):

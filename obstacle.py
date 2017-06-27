@@ -32,8 +32,8 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.x
 
-	def setX(self):
-		self.rect.x = self.rect.x - self.rect.width
+	def setX(self,x):
+		self.rect.x = x
 
 	def getY(self):
 		'''
@@ -43,8 +43,8 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.y
 
-	def setY(self):
-		self.rect.y = self.rect.y - self.rect.width
+	def setY(self,y):
+		self.rect.y = y
 
 	#def getSz(self):
 	#	return self.sz
@@ -54,6 +54,29 @@ class Obstacle(pygame.sprite.Sprite):
 			Used to automatically change direction after move() is called
 			args: None
 			return: None
+		'''
+		''' Possible change to self.dir, self.dir split in to self.dirx, being left/right, and self.diry, being up and down 
+		
+
+		if collide:
+			if self.dirx == 'right':
+				self.dirx = 'left'
+			elif self.dirx == 'left':
+				self.dirx = 'right'
+			if self.diry == 'up':
+				self.diry = 'down'
+			elif self.diry == 'down':
+				self.diry = 'up'
+
+
+		if (self.rect.x <= 0):
+			self.dirx = 'right'
+		elif (self.rect.right >= self.scrwidth):
+			self.dirx = 'left'
+		if (self.rect.y <= 0):
+			self.diry = 'down'
+		elif (self.rect.bottom >= self.scrheight):
+			self.diry = 'up'###mess with speed maybe
 		'''
 		if collide:
 			if self.dir == 'right':
@@ -80,6 +103,18 @@ class Obstacle(pygame.sprite.Sprite):
 			Used to move automatically
 			args: None
 			return: None
+		'''
+		''' Possible change to self.dir, self.dir split in to self.dirx, being left/right, and self.diry, being up and down 
+		
+		if (self.dirx == 'left'):
+			self.rect.x -= self.spd
+		elif (self.dirx == 'right'):
+			self.rect.x += self.spd
+		if (self.diry == 'up'):
+			self.rect.y -= self.spd
+		elif (self.diry == 'down'):
+			self.rect.y += self.spd
+
 		'''
 		if (self.dir == 'left'):
 			self.rect.x -= self.spd

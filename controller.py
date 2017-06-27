@@ -23,7 +23,7 @@ class Controller:
 		self.gameDisplay = pygame.display.set_mode((self.width,self.height))
 		self.background = pygame.Surface(self.gameDisplay.get_size()).convert()
 		self.initializeObjects()
-		
+
 		try:
 			ptr= open('story.json','r')
 			self.story = json.loads(ptr.read())
@@ -60,8 +60,8 @@ class Controller:
 			posx = 0
 			posy = 0
 
-			mydirx = random.choice(['left','right',None])
-			mydiry = random.choice(['up',None])			
+			mydirx = random.choice(['left','right'])
+			mydiry = random.choice(['up',None])
 
 			self.obstacle.append(obstacle.Obstacle(posx,posy,self.width,self.height,mydirx,mydiry))
 
@@ -136,7 +136,7 @@ class Controller:
 					elif event.key == pygame.K_c:
 						waiting = False
 	def intro_screen(self):
-		
+
 		self.gameDisplay.fill(BLACK)
 
 		self.message_to_screen(self.story['start'],WHITE,25,'orcastd')
@@ -153,7 +153,7 @@ class Controller:
 
 		self.press_cORq()
 
-	
+
 	def game_win_screen(self):
 
 		self.gameDisplay.fill(BLACK)
@@ -175,7 +175,7 @@ class Controller:
 		elif self.level == 4:
 			self.message_to_screen(self.story['fin'],WHITE,25,'orcastd')
 		pygame.display.flip()
-	
+
 		waiting = True
 		pygame.key.set_repeat(1,50)
 		while waiting:
@@ -194,7 +194,7 @@ class Controller:
 						if self.level == 1:
 							self.notReverse = False
 						if self.level == 2:
-							self.notReverse = True
+							self.notReverse = False
 						if self.level == 3:
 							self.notReverse = True
 						if self.level!=4:
@@ -203,7 +203,7 @@ class Controller:
 						if self.level == 1:
 							self.notReverse = True
 						if self.level == 2:
-							self.notReverse = False
+							self.notReverse = True
 						if self.level == 3:
 							self.notReverse = False
 						if self.level!=4:
@@ -221,6 +221,7 @@ class Controller:
 			if gameOver:
 				self.game_over_screen()
 				self.level = 1
+				self.notReverse = True
 				self.initializeObjects()
 				self.intro_screen()
 				gameOver = False
@@ -230,6 +231,7 @@ class Controller:
 				gameWin = False
 				if self.level ==4:
 					self.level = 1
+					self.notReverse = True
 					self.initializeObjects()
 					self.intro_screen()
 				else:

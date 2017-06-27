@@ -36,6 +36,8 @@ class Controller:
 		elif self.level == 2:
 			img = 'mars'
 		elif self.level == 3:
+			img = 'POD_small'
+		else:
 			img = 'satellite'
 
 		
@@ -47,12 +49,16 @@ class Controller:
 			posx = random.randrange(0,self.width)
 			posy = random.randrange(self.resup.rect.bottom,self.spaceship.rect.top)
 
-			mydir = random.choice(['left','right','up'])
+			mydirx = random.choice(['left','right',None])
+			mydiry = random.choice(['up',None])			
 
-			self.obstacle.append(obstacle.Obstacle(posx,posy,self.width,self.height,mydir))
+			self.obstacle.append(obstacle.Obstacle(posx,posy,self.width,self.height,mydirx,mydiry))
 
-			#self.obstacle[i].setx = self.obstacle[i].getx - self.obstacle[i].rect.width
-			#self.obstacle[i].setx = self.obstacle[i].getx - self.obstacle[i].rect.width
+			posx = random.randrange(0,self.width-self.obstacle[i].rect.width)
+			posy = random.randrange(self.resup.rect.bottom,self.spaceship.rect.top-self.obstacle[i].rect.height)
+
+			self.obstacle[i].setX(posx)
+			self.obstacle[i].setY(posy)
 
 		self.sprites = pygame.sprite.RenderPlain((self.spaceship,) + tuple(self.obstacle)+ (self.resup,))	#setup main menue, as well as other objects
 

@@ -250,8 +250,10 @@ class Controller:
 				if pygame.sprite.collide_rect(self.spaceship,self.obstacle[i]):
 					gameOver = True
 				col = (pygame.sprite.collide_rect(self.resup,self.obstacle[i]))
-				self.obstacle[i].change_dir(col)
-				self.resup.change_dir(col)
+				if col:
+					if (self.resup.rect.bottom > self.obstacle[i].rect.top)
+						self.resup.change_dir(col, self.obstacle[i].dirx)
+					self.obstacle[i].change_dir(col)
 		    # Check to see if the spaceship hit the resup
 			if pygame.sprite.collide_rect(self.spaceship,self.resup):
 				gameWin = True

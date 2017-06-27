@@ -31,24 +31,28 @@ class Controller:
 
 		img = ''
 
-		if self.level <2:
+		if self.level == 1:
 			img = 'moon'
-		elif self.level <3:
+		elif self.level == 2:
 			img = 'mars'
-		#elif self.level <4:
-		else:
+		elif self.level == 3:
 			img = 'satellite'
 
-		self.resup = resup.Resup(self.width//2, self.height//7,self.width,self.height,img)
+		
+
+		self.resup = resup.Resup(self.width/2, self.height/7,self.width,self.height,img)
 
 		self.obstacle = []
 		for i in range(numobs):
-			posx = self.width/2
-			posy = self.height/2
+			posx = random.randrange(0,self.width)
+			posy = random.randrange(self.resup.rect.bottom,self.spaceship.rect.top)
 
 			mydir = random.choice(['left','right','up'])
 
 			self.obstacle.append(obstacle.Obstacle(posx,posy,self.width,self.height,mydir))
+
+			#self.obstacle[i].setx = self.obstacle[i].getx - self.obstacle[i].rect.width
+			#self.obstacle[i].setx = self.obstacle[i].getx - self.obstacle[i].rect.width
 
 		self.sprites = pygame.sprite.RenderPlain((self.spaceship,) + tuple(self.obstacle)+ (self.resup,))	#setup main menue, as well as other objects
 
@@ -239,6 +243,7 @@ class Controller:
 			for i in range(len(self.obstacle)):
 				if pygame.sprite.collide_rect(self.spaceship,self.obstacle[i]):
 					gameOver = True
+				self.obstacle[i].change_dir(pygame.sprite.collide_rect(self.resup,self.obstacle[i]))
 
 		    # Check to see if the spaceship hit the resup
 			if pygame.sprite.collide_rect(self.spaceship,self.resup):

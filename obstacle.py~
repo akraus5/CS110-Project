@@ -4,19 +4,21 @@ import utility
 class Obstacle(pygame.sprite.Sprite):
 	"""Obstacle object, decreases in size as game goes on, more appear in the game as time goes on"""
 
-	def __init__(self, x_val, y_val, scrwidth,scrheight, stDirx=None,stDiry=None, speed = 5, size = 'small'):#Y value is at top of screen
+	def __init__(self, x_val, y_val, scrwidth,scrheight, stDirx=None,stDiry=None, speed = 3, size = 'small'):#Y value is at top of screen
 		'''
 			Initialize Obstacle
 			args: 	x_val: int, starting x position
 					y_val: int, starting y position
 					scrW: int, screen width
 					scrH: int, screen height
-					stDir: string, starting direction (accepts 'left', 'right', 'up', 'down')
+					stDirx: string, starting direction (accepts 'left', 'right')
+					stDirx: string, starting direction (accepts 'up', 'down')
 					speed: int, x and y increment amount
 			return: None
 		'''
 
-		pygame.sprite.Sprite.__init__(self)		#Possibly change picture file depending on size, or set input to controller
+		pygame.sprite.Sprite.__init__(self)
+
 		self.image, self.rect = utility.LoadImage('asteroid_' + size + '.png', -1)
 		self.rect.center = (x_val,y_val)
 		self.dirx = stDirx
@@ -56,8 +58,6 @@ class Obstacle(pygame.sprite.Sprite):
 			args: None
 			return: None
 		'''
-		#Possible change to self.dir, self.dir split in to self.dirx, being left/right, and self.diry, being up and down 
-		
 
 		if collide:
 			if self.dirx == 'right':
@@ -68,6 +68,8 @@ class Obstacle(pygame.sprite.Sprite):
 				self.diry = 'down'
 			elif self.diry == 'down':
 				self.diry = 'up'
+			else:
+				self.diry = 'down'
 
 
 		if (self.rect.x <= 0):

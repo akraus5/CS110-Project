@@ -27,24 +27,8 @@ class Obstacle(pygame.sprite.Sprite):
 		self.scrwidth = scrwidth
 		self.scrheight = scrheight
 
-	def getX(self):
-		'''
-			Get x value of obstacle
-			args: None
-			return: self.rect.x (int)
-		'''
-		return self.rect.x
-
 	def setX(self,x):
 		self.rect.x = x
-
-	def getY(self):
-		'''
-			Get y value of obstacle
-			args: None
-			return: self.rect.y (int)
-		'''
-		return self.rect.y
 
 	def setY(self,y):
 		self.rect.y = y

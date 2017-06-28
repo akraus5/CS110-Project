@@ -46,19 +46,3 @@ class Resup(pygame.sprite.Sprite):
 				self.rect.x += self.spd
 			self.change_dir()
 	
-	def getX(self):
-		'''
-			Get x value of resupply model
-			args: None
-			return: self.rect.x (int)
-		'''
-		return self.rect.x
-
-	def getY(self):
-		'''
-			Get y value of resupply model
-			args: None
-			return: self.rect.y (int)
-		'''
-		return self.rect.y
-

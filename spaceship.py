@@ -5,12 +5,10 @@ class SpaceShip(pygame.sprite.Sprite):
 	def __init__(self,scrwidth,scrheight,choice = True, spd_x = 5):
 		'''
 			Initialize SpaceShip
-			args: 		image: obj, image sprite of object
-					rect: obj, rectangle, set by image
-					speed_x: int, changes location of x coordinates on screen
-					speed_y: float, increases based on how long up/down keys pressed
-					scrwidth/scrheight: int, hwight and width of screen, used to keep obj in bounds
-					lucid: bool, used for multiple choice. if True, ship works as expected, if False, left and right keys reversed
+			args: 	scrwidth/scrheight: int, hwight and width of screen, used to keep obj in bounds
+					choice: bool, used for lucid setting. if True, ship works as expected, if False, left and right keys reversed
+					spd_x: int, changes location of x coordinates on screen
+
 			return: None
 		'''
 		pygame.sprite.Sprite.__init__(self)
@@ -24,7 +22,10 @@ class SpaceShip(pygame.sprite.Sprite):
 
 	def change_lucid(self,choice):
 		'''
-			change lucid bool
+			Change spaceship lucid (direction keys)
+			args: choice: bool - 	if true, direction keys not reversed
+									if false, direction keys reversed
+			return: None
 		'''
 		self.lucid = choice
 
@@ -48,7 +49,7 @@ class SpaceShip(pygame.sprite.Sprite):
 		'''
 			Used to move spaceship (change x and y position)
 			for x, speed_x is initialized in __init__ and always constant, for speed_y, it is initialized as 0, then increased/decreased based on up/down keys.
-			args: 	evnt: event.key, input key
+			args: 	None
 			return: None
 		'''
 		keys = pygame.key.get_pressed()
@@ -57,13 +58,13 @@ class SpaceShip(pygame.sprite.Sprite):
 
 		elif (keys[pygame.K_DOWN]):
 			self.speed_y -= .5
-		
+
 		self.rect.y -= self.speed_y
 
 		if not (((self.rect.bottom) < self.scrheight)):
 			self.rect.y = self.rect.top
 			self.speed_y = -1*(self.speed_y) #or -1.5 as a penalty for missing resup
-		elif not (self.rect.y > 0): 
+		elif not (self.rect.y > 0):
 			self.rect.y = 0
 			self.speed_y = -1*(self.speed_y) #or -1.5 as a penalty for missing resup
 
@@ -81,4 +82,3 @@ class SpaceShip(pygame.sprite.Sprite):
 
 			elif ((keys[pygame.K_RIGHT]) and (self.rect.x > 0)):
 				self.rect.x -= self.speed_x
-

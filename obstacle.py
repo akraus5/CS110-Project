@@ -4,7 +4,7 @@ import utility
 class Obstacle(pygame.sprite.Sprite):
 	"""Obstacle object, decreases in size as game goes on, more appear in the game as time goes on"""
 
-	def __init__(self, x_val, y_val, scrwidth,scrheight, stDirx=None,stDiry=None, speed = 3, size = 'small'):#Y value is at top of screen
+	def __init__(self, x_val, y_val, scrwidth,scrheight, stDirx=None,stDiry=None, speed = 3, size = 'small'):
 		'''
 			Initialize Obstacle
 			args: 	x_val: int, starting x position
@@ -49,9 +49,6 @@ class Obstacle(pygame.sprite.Sprite):
 	def setY(self,y):
 		self.rect.y = y
 
-	#def getSz(self):
-	#	return self.sz
-
 	def change_dir(self, collide = False):
 		'''
 			Used to automatically change direction after move() is called
@@ -81,7 +78,7 @@ class Obstacle(pygame.sprite.Sprite):
 		if (self.rect.y <= 0):
 			self.diry = 'down'
 		elif (self.rect.bottom >= self.scrheight):
-			self.diry = 'up'###mess with speed maybe
+			self.diry = 'up'
 
 	def update(self):
 		'''
@@ -89,7 +86,6 @@ class Obstacle(pygame.sprite.Sprite):
 			args: None
 			return: None
 		'''
-		#Possible change to self.dir, self.dir split in to self.dirx, being left/right, and self.diry, being up and down 
 		
 		if (self.dirx == 'left'):
 			self.rect.x -= self.spd
@@ -102,4 +98,3 @@ class Obstacle(pygame.sprite.Sprite):
 
 		self.change_dir()
 
-	#def __str__(self):

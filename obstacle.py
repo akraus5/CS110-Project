@@ -7,13 +7,13 @@ class Obstacle(pygame.sprite.Sprite):
 	def __init__(self, x_val, y_val, scrwidth,scrheight, stDirx=None,stDiry=None, speed = 3, size = 'small'):
 		'''
 			Initialize Obstacle
-			args: 		image: obj, image sprite of object
-					rect: obj, rectangle, set by image
-					dirx: string, starting direction (accepts 'left', 'right')
-					diry: string, starting direction (accepts 'up', 'down')
-					spd: int, speed of movement
+			args: 	x_val:	int, starting x position
+					y_val:	int, starting y position
 					scrwidth/scrheight: int, hwight and width of screen, used to keep obj in bounds
-					
+					stDiryirx: string, starting direction (accepts 'left', 'right')
+					stdDiry: string, starting direction (accepts 'up', 'down')
+					speed: int, speed of movement
+					size: string, size of obstacle (accepts  'small','medium','large')
 			return: None
 		'''
 
@@ -35,12 +35,6 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.x
 
-	def setX(self,x):
-		'''
-			change rect.x value using x parameter
-		'''
-		self.rect.x = x
-
 	def getY(self):
 		'''
 			Get y value of obstacle
@@ -49,16 +43,26 @@ class Obstacle(pygame.sprite.Sprite):
 		'''
 		return self.rect.y
 
+	def setX(self,x):
+		'''
+			change rect.x value using x parameter
+			args: x (int, new x value)
+			return: None
+		'''
+		self.rect.x = x
+
 	def setY(self,y):
 		'''
 			change rect.y value using y parameter
+			args: y (int, new y value)
+			return: None
 		'''
 		self.rect.y = y
 
 	def change_dir(self, collide = False):
 		'''
 			Used to automatically change direction before (when checking collisions) and after update() is called
-			args: 		collide: bool, if collide triggered True, then determines how collision idrection should be changed.
+			args: collide: bool, if collide triggered True, then determines how collision idrection should be changed.
 			return: None
 		'''
 
@@ -92,7 +96,7 @@ class Obstacle(pygame.sprite.Sprite):
 			args: None
 			return: None
 		'''
-		
+
 		if (self.dirx == 'left'):
 			self.rect.x -= self.spd
 		elif (self.dirx == 'right'):
@@ -103,4 +107,3 @@ class Obstacle(pygame.sprite.Sprite):
 			self.rect.y += self.spd
 
 		self.change_dir()
-

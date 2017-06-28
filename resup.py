@@ -9,6 +9,12 @@ class Resup(pygame.sprite.Sprite):
 			Initialize resupply model
 			args: 	x_val: int, starting x position
 					y_val: int, starting y position
+					scrwidth: int, screen width
+					scrheight: int, screen height
+					restype: string, resup type (accepts 'moon','mars','POD','satellite')
+					moving: bool, True for moving resup, False for not moving resup
+					direction: string, start direction of resup (accepts 'left' and 'right')
+					spd: int, speed of moving resup
 			return: None
 		'''
 		pygame.sprite.Sprite.__init__(self)
@@ -20,7 +26,7 @@ class Resup(pygame.sprite.Sprite):
 		self.spd = spd
 		self.dir = direction
 
-	
+
 	def getX(self):
 		'''
 			Get x value of resupply model
@@ -40,7 +46,7 @@ class Resup(pygame.sprite.Sprite):
 	def change_dir(self, collide = False, obdirx = None):
 		'''
 			Used to automatically change direction before (when checking collisions) and after update() is called, if obstacle and resup move in different directions, resup changes directions
-			args: 		collide: bool, checks if any collision occures
+			args: 	collide: bool, checks if any collision occures
 					obdirx: string/None: checks if obstacles direction is oppsite of resup, if so, resup changes direction
 			return: None
 		'''
@@ -66,5 +72,3 @@ class Resup(pygame.sprite.Sprite):
 			elif (self.dir == 'right'):
 				self.rect.x += self.spd
 			self.change_dir()
-
-

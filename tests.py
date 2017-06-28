@@ -1,245 +1,165 @@
 import spaceship, obstacle, resup
 import pygame
 
-def getPos(mything): # possibly add this to each class
-    return (mything.getX(),mything.getY())
+def getPos(myThing): # possibly add this to each class
+    '''
+        Gets x and y cooridnate of an object
+        args: myThing: an object (spaceship, obstacle, resup)
+        return: tuple (X coordinate,Y coordinate)
+    '''
+    return (myThing.getX(),myThing.getY())
+
+def testMinMax(myThing):
+    '''
+        Used to get minimum and maximum X and Y coordinates of a moving object
+        args: myThing: an object (spaceship, obstacle, resup)
+        return: None
+    '''
+    clock = pygame.time.Clock()
+
+    maxX = myThing.getX()
+    minX = myThing.getX()
+    maxY = myThing.getY()
+    minY = myThing.getY()
+
+    stop = False
+    while(stop != True):
+        clock.tick(60)
+        myThing.update()
+        #note that this also tests change_dir() in both obstacle and resup
+        pos = getPos(myThing)
+
+        if myThing.getX() > maxX:
+            maxX = myThing.getX()
+        if myThing.getX() < minX:
+            minX = myThing.getX()
+        if myThing.getY() > maxY:
+            maxY = myThing.getY()
+        if myThing.getY() < minY:
+            minY = myThing.getY()
+
+        #print(pos)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if(event.key==pygame.K_q):
+                    stop = True
+    print("Min X: ", minX)
+    print("Max X: ", maxX)
+    print("Min Y: ", minY)
+    print("Max Y: ", maxY)
 
 def main():
+    '''
+        Testing all methods of spaceship, obstacle, and resup
+        args: None
+        return: None
+    '''
     # Initializing pygame:
     pygame.init()
-    pygame.key.set_repeat(1,500)
+    pygame.key.set_repeat(1,50)
+    clock = pygame.time.Clock()
+    width = 500
+    height = 700
 
     print("########## Testing spaceship model ##########")
 
     # Initialize our spaceship:
-    ship = spaceship.SpaceShip(500,1000)
+    ship = spaceship.SpaceShip(width,height)
+    startPos = getPos(ship)
+
+    print("Start position: ",startPos)
+    print("========== Testing Spaceship Update ==========")
+    print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
+
+    stop = False
+    while(stop != True):
+        clock.tick(60)
+        for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if(event.key==pygame.K_q):
+                        stop = True
+        ship.update()
+        pos = getPos(ship)
+        print(pos)
+
+    print("========== Testing Spaceship Lucid & Update ==========")
+    print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
+
+    ship.change_lucid(False)
+
+    stop = False
+    while(stop != True):
+        clock.tick(60)
+        for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if(event.key==pygame.K_q):
+                        stop = True
+        ship.update()
+        pos = getPos(ship)
+        print(pos)
+
+    print("========== Testing spaceship speed ==========")
+    print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
+
+    sp = int(input("Input speed: "))
+    lu = input("Input lucid (True/False): ")
+
+    ship = spaceship.SpaceShip(width,height,lu,sp)
     startPos = getPos(ship)
 
     print("Start position: ",startPos)
 
-    print("========== Standard Input Test ==========")
-
-    ship.move(pygame.K_UP)
-    pos = getPos(ship)
-    print("UP:", pos)
-
-    ship.move(pygame.K_DOWN)
-    pos = getPos(ship)
-    print("DOWN:", pos)
-
-    ship.move(pygame.K_LEFT)
-    pos = getPos(ship)
-    print("LEFT:", pos)
-
-    ship.move(pygame.K_RIGHT)
-    pos = getPos(ship)
-    print("RIGHT:", pos)
-
-    print("========== User Input Test ==========")
-    print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
-
     stop = False
     while(stop != True):
+        clock.tick(60)
         for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    ship.move(event.key)
-                    pos = getPos(ship)
-                    print(pos)
                     if(event.key==pygame.K_q):
                         stop = True
+        ship.update()
+        pos = getPos(ship)
+        print(pos)
 
     print("########## Testing obstacle model ##########")
     print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
 
-    direction = input("Type direction (up,down,left,right): ")
+    xdirection = input("Input x direction (left,right): ")
+    ydirection = input("Input y direction (up,down): ")
+    speed = int(input("Input speed: "))
 
-    obst = obstacle.Obstacle(400,500,5000,10000, direction)
+    obst = obstacle.Obstacle(width/2,height/2,width,height,xdirection,ydirection,speed)
     startPos = getPos(obst)
     print("Start position: ",startPos)
 
-    maxX = obst.getX()
-    minX = obst.getX()
-    maxY = obst.getY()
-    minY = obst.getY()
+    testMinMax(obst)
 
-    stop = False
-    while(stop != True):
-        obst.move()
-        obst.change_dir()
-        pos = getPos(obst)
+    print("========== Testing obstacle setx and sety ==========")
 
-        if obst.getX() > maxX:
-            maxX = obst.getX()
-        if obst.getX() < minX:
-            minX = obst.getX()
-        if obst.getY() > maxY:
-            maxY = obst.getY()
-        if obst.getY() < minY:
-            minY = obst.getY()
+    obst = obstacle.Obstacle(width/2,height/2,width,height)
+    print("Position: ", getPos(obst))
 
-        #print(pos)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if(event.key==pygame.K_q):
-                    stop = True
-    print("Min X: ", minX)
-    print("Max X: ", maxX)
-    print("Min Y: ", minY)
-    print("Max Y: ", maxY)
-    '''
-    print("########## Testing y obstacle model ##########")
-    print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
+    newx = int(input("Input new x: "))
+    newy = int(input("Input new y: "))
 
-    obst = obstacle.Obstacle(400,500,5000,10000,'down')
-    startPos = getPos(obst)
-    print("Start position: ",startPos)
+    obst.setX(newx)
+    obst.setY(newy)
 
-    maxY = obst.getY()
-    minY = obst.getY()
-
-    stop = False
-    while(stop != True):
-        #for event in pygame.event.get():
-        obst.move()
-        obst.change_dir()
-        pos = getPos(obst)
-        #print(pos)
-
-        if obst.getY() > maxY:
-            maxY = obst.getY()
-        if obst.getY() < minY:
-            minY = obst.getY()
-
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if(event.key==pygame.K_q):
-                    stop = True
-
-    print("Min Y: ", minY)
-    print("Max Y: ", maxY)
-    '''
+    print("New Position: ", getPos(obst))
 
     print("########## Testing resup model ##########")
-
-    station = resup.Resup(50,50)
-    print(getPos(station))
-
-########################################################
-
-    print("######### Changing Speed Testing ########")
-
-    print("########## Testing spaceship model ##########")
+    print("========== Testing stationary resup ==========")
     print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
 
-    sp = int(input("Input speed test: "))
+    station = resup.Resup(width/2,height/2,width,height)
+    testMinMax(station)
 
-    ship = spaceship.SpaceShip(500,1000,sp)
-    startPos = getPos(ship)
-
-    print("Start position: ",startPos)
-
-    print("========== Standard Input Test ==========")
-
-    ship.move(pygame.K_UP)
-    pos = getPos(ship)
-    print("UP:", pos)
-
-    ship.move(pygame.K_DOWN)
-    pos = getPos(ship)
-    print("DOWN:", pos)
-
-    ship.move(pygame.K_LEFT)
-    pos = getPos(ship)
-    print("LEFT:", pos)
-
-    ship.move(pygame.K_RIGHT)
-    pos = getPos(ship)
-    print("RIGHT:", pos)
-
-    print("========== User Input Test ==========")
+    print("========== Testing moving resup ==========")
     print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
 
-    stop = False
-    while(stop != True):
-        for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    ship.move(event.key)
-                    pos = getPos(ship)
-                    print(pos)
-                    if(event.key==pygame.K_q):
-                        stop = True
+    direction = input("Input direction (left/right): ")
+    speed = int(input("Input speed: "))
 
-    print("########## Testing obstacle model ##########")
-    print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
+    station = resup.Resup(width/2,height/2,width,height,'moon',True,direction,speed)
+    testMinMax(station)
 
-    direction = input("Type direction (up,down,left,right): ")
-    sp = int(input("Input speed test: "))
-
-    obst = obstacle.Obstacle(400,500,5000,10000,direction,sp)
-    startPos = getPos(obst)
-    print("Start position: ",startPos)
-
-    maxX = obst.getX()
-    minX = obst.getX()
-    maxY = obst.getY()
-    minY = obst.getY()
-
-    stop = False
-    while(stop != True):
-        #for event in pygame.event.get():
-        obst.move()
-        obst.change_dir()
-        pos = getPos(obst)
-
-        if obst.getX() > maxX:
-            maxX = obst.getX()
-        if obst.getX() < minX:
-            minX = obst.getX()
-        if obst.getY() > maxY:
-            maxY = obst.getY()
-        if obst.getY() < minY:
-            minY = obst.getY()
-
-        #print(pos)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if(event.key==pygame.K_q):
-                    stop = True
-    print("Min X: ", minX)
-    print("Max X: ", maxX)
-    print("Min Y: ", minY)
-    print("Max Y: ", maxY)
-    '''
-    print("########## Testing y obstacle model ##########")
-    print("~~~~~~~~~~ Press q to continue ~~~~~~~~~~")
-
-    sp = int(input("Input speed test: "))
-
-    obst = obstacle.Obstacle(400,500,5000,10000,'down',sp)
-    startPos = getPos(obst)
-    print("Start position: ",startPos)
-
-    maxY = obst.getY()
-    minY = obst.getY()
-
-    stop = False
-    while(stop != True):
-        obst.move()
-        obst.change_dir()
-        pos = getPos(obst)
-        #print(pos)
-
-        if obst.getY() > maxY:
-            maxY = obst.getY()
-        if obst.getY() < minY:
-            minY = obst.getY()
-
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if(event.key==pygame.K_q):
-                    stop = True
-
-    print("Min Y: ", minY)
-    print("Max Y: ", maxY)
-    '''
 main()

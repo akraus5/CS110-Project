@@ -7,13 +7,13 @@ class Obstacle(pygame.sprite.Sprite):
 	def __init__(self, x_val, y_val, scrwidth,scrheight, stDirx=None,stDiry=None, speed = 3, size = 'small'):
 		'''
 			Initialize Obstacle
-			args: 	x_val: int, starting x position
-					y_val: int, starting y position
-					scrW: int, screen width
-					scrH: int, screen height
-					stDirx: string, starting direction (accepts 'left', 'right')
-					stDirx: string, starting direction (accepts 'up', 'down')
-					speed: int, x and y increment amount
+			args: 		image: obj, image sprite of object
+					rect: obj, rectangle, set by image
+					dirx: string, starting direction (accepts 'left', 'right')
+					diry: string, starting direction (accepts 'up', 'down')
+					spd: int, speed of movement
+					scrwidth/scrheight: int, hwight and width of screen, used to keep obj in bounds
+					
 			return: None
 		'''
 
@@ -27,16 +27,38 @@ class Obstacle(pygame.sprite.Sprite):
 		self.scrwidth = scrwidth
 		self.scrheight = scrheight
 
+	def getX(self):
+		'''
+			Get x value of obstacle
+			args: None
+			return: self.rect.x (int)
+		'''
+		return self.rect.x
+
 	def setX(self,x):
+		'''
+			change rect.x value using x parameter
+		'''
 		self.rect.x = x
 
+	def getY(self):
+		'''
+			Get y value of obstacle
+			args: None
+			return: self.rect.y (int)
+		'''
+		return self.rect.y
+
 	def setY(self,y):
+		'''
+			change rect.y value using y parameter
+		'''
 		self.rect.y = y
 
 	def change_dir(self, collide = False):
 		'''
-			Used to automatically change direction after move() is called
-			args: None
+			Used to automatically change direction before (when checking collisions) and after update() is called
+			args: 		collide: bool, if collide triggered True, then determines how collision idrection should be changed.
 			return: None
 		'''
 
@@ -66,7 +88,7 @@ class Obstacle(pygame.sprite.Sprite):
 
 	def update(self):
 		'''
-			Used to move automatically
+			Used to move automatically, calls change_dir at end to check bounds
 			args: None
 			return: None
 		'''

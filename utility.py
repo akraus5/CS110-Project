@@ -1,4 +1,4 @@
-import os, sys, random
+import os
 import pygame
 
 def LoadImage(name, colorkey=None):

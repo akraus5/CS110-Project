@@ -19,6 +19,7 @@ class Controller:
 		'''
 		pygame.init()
 		self.clock = pygame.time.Clock()
+		# Create the screen
 		self.width = 500
 		self.height= 700
 		self.level = 1
@@ -26,7 +27,9 @@ class Controller:
 		self.gameDisplay = pygame.display.set_mode((self.width,self.height))
 		self.background = pygame.Surface(self.gameDisplay.get_size()).convert()
 		self.initializeObjects()
+		pygame.display.set_caption('Space Travel')
 
+		# Read the story file
 		try:
 			ptr= open('story.json','r')
 			self.story = json.loads(ptr.read())
@@ -35,7 +38,6 @@ class Controller:
 		else:
 			ptr.close()
 
-		pygame.display.set_caption('Space Travel')
 
 	def initializeObjects(self):
 		'''
@@ -91,6 +93,14 @@ class Controller:
 		# Group the spaceship, obstacles and resupply station as a tuple
 		self.sprites = pygame.sprite.RenderPlain((self.spaceship,) + tuple(self.obstacle)+ (self.resup,))
 
+	def exit_the_game(self):
+		'''
+			Exit pygame and python
+			arg: None
+			Return: None
+		'''
+		pygame.quit()
+		quit()
 
 	def message_to_screen(self,text, color, sz, fnt, disp=0, aa=True, bkg=None):
 		'''
@@ -154,17 +164,16 @@ class Controller:
 			arg: None
 			return: None
 		'''
+		# Reregister the input keys every 50ms
 		pygame.key.set_repeat(1,50)
 		waiting = True
 		while waiting:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					pygame.quit()
-					quit()
+					self.exit_the_game()
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_q:
-						pygame.quit()
-						quit()
+						self.exit_the_game()
 					elif event.key == pygame.K_c:
 						waiting = False
 	def intro_screen(self):
@@ -173,12 +182,14 @@ class Controller:
 			arg: None
 			return: None
 		'''
-
+		# Fill the screen with black color
 		self.gameDisplay.fill(BLACK)
 
+		# Display the message
 		self.message_to_screen(self.story['start'],WHITE,25,'orcastd')
 		pygame.display.flip()
 
+		# Waiting for user to press the key
 		self.press_cORq()
 
 
@@ -188,11 +199,15 @@ class Controller:
 			arg: None
 			return: None
 		'''
+		# Fill the screen with black color
 		self.gameDisplay.fill(BLACK)
+
+		# Display the message
 		self.message_to_screen('You Lose',RED,100,'comicsansms')
 		self.message_to_screen('Press C to play again or Q to quit',WHITE,30,'comicsansms',200)
 		pygame.display.flip()
 
+		# Waiting for user to press the key
 		self.press_cORq()
 
 
@@ -202,11 +217,15 @@ class Controller:
 			arg: None
 			return: None
 		'''
+		# Fill the screen with black color
 		self.gameDisplay.fill(BLACK)
+
+		# Display the message
 		self.message_to_screen('You Win',RED,100,'comicsansms')
 		self.message_to_screen('Press C to continue or Q to quit',WHITE,30,'comicsansms',250)
 		pygame.display.flip()
 
+		# Waiting for user to press the key
 		self.press_cORq()
 
 		# Display a different message on the scrren depending on the game level
@@ -223,42 +242,42 @@ class Controller:
 		elif self.level == 4:
 			self.message_to_screen(self.story['fin'],WHITE,25,'orcastd')
 
+		# Update the contents of the entire display
 		pygame.display.flip()
 
-		waiting = True
+		# Reregister the input keys every 50ms
 		pygame.key.set_repeat(1,50)
+
+		waiting = True
 		while waiting:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					pygame.quit()
-					quit()
+					self.exit_the_game()
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_q:
-						pygame.quit()
-						quit()
-					if event.key == pygame.K_c:
-						if self.level == 4:
-							waiting = False
+						self.exit_the_game()
 
-					# Determine if left and right key controls will reverser on the next level
-					elif event.key == pygame.K_1:
+					# if level is 4 and input is C, you will get out of while loop
+					if self.level==4 and event.key == pygame.K_c:
+						waiting = False
+
+					# Determine if left and right key controls will reverser on the next level, not including the level 4
+					elif self.level!=4 and event.key == pygame.K_1:
 						if self.level == 1:
 							self.notReverse = False
 						if self.level == 2:
 							self.notReverse = False
 						if self.level == 3:
 							self.notReverse = True
-						if self.level!=4:
-							waiting = False
-					elif event.key == pygame.K_2:
+						waiting = False
+					elif self.level!=4 and event.key == pygame.K_2:
 						if self.level == 1:
 							self.notReverse = True
 						if self.level == 2:
 							self.notReverse = True
 						if self.level == 3:
 							self.notReverse = False
-						if self.level!=4:
-							waiting = False
+						waiting = False
 
 	def mainloop(self):
 		'''
@@ -271,7 +290,10 @@ class Controller:
 		gameExit = False
 		gameOver = False
 		gameWin = False
+
+		# Reregister the input keys every 50ms
 		pygame.key.set_repeat(1,50)
+
 		while not gameExit:
 			# Keep loop running at the right speed
 			self.clock.tick(60)
@@ -289,17 +311,18 @@ class Controller:
 			elif gameWin:
 				self.game_win_screen()
 				gameWin = False
+
 				# If the game level is 4, initialize all settings to the first level
 				if self.level ==4:
 					self.level = 1
 					self.notReverse = True
 					self.initializeObjects()
 					self.intro_screen()
+
 				# if the game level is not 4, reset the spaceship, obstacles, and resupply station to the next level
 				else:
 					self.level += 1
 					self.initializeObjects()
-
 
 			# Process input
 			for event in pygame.event.get():
@@ -309,17 +332,25 @@ class Controller:
 			# Update
 			self.sprites.update()
 
-			# Check to see if the spaceship hit an obstacle
+			# Check to see if the spaceship hits an obstacle.
+			# If hits, game over
 			for i in range(len(self.obstacle)):
 				if pygame.sprite.collide_rect(self.spaceship,self.obstacle[i]):
 					gameOver = True
-				# Check to see if the spaceship hit an obstacle
+
+				# Check to see if obstacles hit the resupply station 
 				col = (pygame.sprite.collide_rect(self.resup,self.obstacle[i]))
+
 				if col:
+					# Changes the dirction of the resupply station if the top of the obstacle hits the bottom of the station
 					if (self.resup.rect.bottom > self.obstacle[i].rect.top):
 						self.resup.change_dir(col, self.obstacle[i].dirx)
+
+					# Change the dirction of the obstacle if it hits the resupply station
 					self.obstacle[i].change_dir(col)
-			# Check to see if the spaceship hit the resup
+
+			# Check to see if the spaceship hits the resupply station
+			# If hits, game win
 			if pygame.sprite.collide_rect(self.spaceship,self.resup):
 				gameWin = True
 
@@ -327,11 +358,10 @@ class Controller:
 			self.gameDisplay.fill(BLACK)
 			self.sprites.draw(self.gameDisplay)
 
-
+			# Update the contents of the entire display
 			pygame.display.flip()
 
-		pygame.quit()
-		quit()
+		self.exit_the_game()
 
 
 

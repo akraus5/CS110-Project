@@ -17,45 +17,10 @@ class SpaceShip(pygame.sprite.Sprite):
 		self.rect.center = (scrwidth//2,scrheight*6/7)
 		self.scrwidth = scrwidth
 		self.scrheight = scrheight
-		#self.alive = True
-		#self.win = False
-		#self.sprite
 		self.lucid =choice
-
-
-	#def die(self):
-		#Meant to end main loop and end game
-		#self.alive = False
-
-	#def winLev(self):
-		#Ends subloop for each level
-		#self.win = True
 
 	def change_lucid(self,choice):
 		self.lucid = choice
-
-	#def getStatus(self):
-		#return self.alive,self.win
-
-	#def strtLev(self):#
-		##########resets ship parameters for next level
-		#self.win = False
-
-	#def getX(self):	#get X val
-		'''
-			Get x value of spaceship
-			args: None
-			return: self.rect.x (int)
-		'''
-		#return self.rect.x
-
-	#def getY(self):	#get Y val
-		'''
-			Get y value of spaceship
-			args: None
-			return: self.rect.x (int)
-		'''
-		#return self.rect.y
 
 	def update(self):
 		'''
@@ -95,11 +60,3 @@ class SpaceShip(pygame.sprite.Sprite):
 
 			elif ((keys[pygame.K_RIGHT]) and (self.rect.x > 0)):
 				self.rect.x -= self.speed_x
-
-	#def __str__(self):
-		'''
-			Return string status of spaceship
-			args: None
-			return: self.alive (str)
-		'''
-	#	return str(self.alive)

@@ -4,14 +4,14 @@ import utility
 class Resup(pygame.sprite.Sprite):
 	"""endpoint object, when collision detected with spaceShip, level completes"""
 
-	def __init__(self, x_val, y_val, scrwidth,scrheight, restype = 'moon', moving = False, direction = 'right', spd = 1):#		possibly scrW ,scrH,  sz = 20
+	def __init__(self, x_val, y_val, scrwidth,scrheight, restype = 'moon', moving = False, direction = 'right', spd = 1):
 		'''
 			Initialize resupply model
 			args: 	x_val: int, starting x position
 					y_val: int, starting y position
 			return: None
 		'''
-		pygame.sprite.Sprite.__init__(self)		#Possibly change picture file depending on size, or set input to controller
+		pygame.sprite.Sprite.__init__(self)
 		self.image, self.rect = utility.LoadImage('resup_' + restype + '.png', -1)
 		self.rect.center = (x_val,y_val)
 		self.scrwidth = scrwidth
@@ -62,13 +62,3 @@ class Resup(pygame.sprite.Sprite):
 		'''
 		return self.rect.y
 
-	#def getSz(self):
-	#	return self.sz
-
-	#def update(self):
-		'''
-			TBD
-			args: None
-			return: None
-		'''
-		#print('Updating Position')

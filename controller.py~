@@ -14,6 +14,20 @@ class Controller:
 	"""Main clas of game, all actions occure in this class"""
 
 	def __init__(self):
+		'''
+		Initialze Controller
+		pygame.init(): function, initialize the pygame
+		clock: obj, record the time
+		width: int, the screen width
+		height: int, the screen height
+		level: int, the game level
+		notReverse: bool, to check if we need to call the change_lucid() function
+		gameDisplay: obj, the screen
+		background: obj, the background of the screen
+		initializaOjects(): function, resets the main obejcts
+		'''
+
+
 		pygame.init()
 		self.clock = pygame.time.Clock()
 		self.width = 500

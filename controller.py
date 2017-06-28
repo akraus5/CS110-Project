@@ -1,6 +1,4 @@
-#import time
 import obstacle,spaceship,resup
-#import levelpack
 import pygame
 import json
 import random
@@ -11,23 +9,14 @@ WHITE = (255,255,255)
 
 
 class Controller:
-	"""Main clas of game, all actions occure in this class"""
+	"""Main class of game, all actions occure in this class"""
 
 	def __init__(self):
 		'''
-		Initialze Controller
-		pygame.init(): function, initialize the pygame
-		clock: obj, record the time
-		width: int, the screen width
-		height: int, the screen height
-		level: int, the game level
-		notReverse: bool, to check if we need to call the change_lucid() function
-		gameDisplay: obj, the screen
-		background: obj, the background of the screen
-		initializaOjects(): function, resets the main obejcts
+			initialize the screen and all objects, and input the story file
+			arg: None
+			return: None
 		'''
-
-
 		pygame.init()
 		self.clock = pygame.time.Clock()
 		self.width = 500
@@ -49,6 +38,11 @@ class Controller:
 		pygame.display.set_caption('Space Travel')
 
 	def initializeObjects(self):
+		'''
+			Create the spaceship,obstacles and resupply station
+			arg: None
+			return: None
+		'''
 		# Create the spaceship
 		self.spaceship = spaceship.SpaceShip(self.width, self.height,5)
 		self.spaceship.change_lucid(self.notReverse)
@@ -94,21 +88,30 @@ class Controller:
 			self.obstacle[i].setX(posx)
 			self.obstacle[i].setY(posy)
 
-		#
+		# Group the spaceship, obstacles and resupply station as a tuple
 		self.sprites = pygame.sprite.RenderPlain((self.spaceship,) + tuple(self.obstacle)+ (self.resup,))
 
-	# Source of message_to_screen() code: http://pygame.org/wiki/TextWrap
-	# draw some text into an area of a surface
-	# automatically wraps words
-	# returns any text that didn't get blitted
+
 	def message_to_screen(self,text, color, sz, fnt, disp=0, aa=True, bkg=None):
+		'''
+			Source of message_to_screen() code: http://pygame.org/wiki/TextWrap
+			Draw some text into an area of a surface, and automatically wraps words
+			arg: 
+				text, str, the message you want to show on the screen
+				color,tuple, the color of the text
+				sz, int, the size of the text
+				fnt, str, the font of the text
+				disp, int, the space of two lines
+				aa, bool, if true the character will have smooth edge
+				bkg, str, the background color of the text
+			return: text that didn't get blitted
+		'''
 		rect=self.gameDisplay.get_rect()
 		rect.width -= (.25 * self.width)
 		rect.height -= (.25 * self.height)
 		rect.center = (self.width/2,self.height/2 + disp)
 
 		font = pygame.font.SysFont(fnt,sz)
-		#rect = Rect(rect)
 		y = rect.top
 		lineSpacing = 2
 
@@ -146,6 +149,11 @@ class Controller:
 		return text
 
 	def press_cORq(self):
+		'''
+			Press C to continue the game, and press Q or click the X buttom to exit the game
+			arg: None
+			return: None
+		'''
 		pygame.key.set_repeat(1,50)
 		waiting = True
 		while waiting:
@@ -160,6 +168,11 @@ class Controller:
 					elif event.key == pygame.K_c:
 						waiting = False
 	def intro_screen(self):
+		'''
+			Displays the game introduction on the screen
+			arg: None
+			return: None
+		'''
 
 		self.gameDisplay.fill(BLACK)
 
@@ -170,6 +183,11 @@ class Controller:
 
 
 	def game_over_screen(self):
+		'''
+			Displays the game over screnen
+			arg: None
+			return: None
+		'''
 		self.gameDisplay.fill(BLACK)
 		self.message_to_screen('You Lose',RED,100,'comicsansms')
 		self.message_to_screen('Press C to play again or Q to quit',WHITE,30,'comicsansms',200)
@@ -179,7 +197,11 @@ class Controller:
 
 
 	def game_win_screen(self):
-
+		'''
+			Displays the game over screnen
+			arg: None
+			return: None
+		'''
 		self.gameDisplay.fill(BLACK)
 		self.message_to_screen('You Win',RED,100,'comicsansms')
 		self.message_to_screen('Press C to continue or Q to quit',WHITE,30,'comicsansms',250)
@@ -237,8 +259,13 @@ class Controller:
 							self.notReverse = False
 						if self.level!=4:
 							waiting = False
-	# Game loop
+
 	def mainloop(self):
+		'''
+			Contains main while loop and game logic
+			arg: None
+			return: None
+		'''
 		# Display the game introduction screen
 		self.intro_screen()
 		gameExit = False
